@@ -43,7 +43,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
         http.logout();
 
         //记住登录
-        //http.rememberMe();
+       http.rememberMe();
     }
 
 
