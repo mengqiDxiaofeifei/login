@@ -148,7 +148,7 @@
                                 </li>
                                 <li><a href="javascript:void(0)"><i class="mdi mdi-delete"></i> 清空缓存</a></li>
                                 <li class="divider"></li>
-                                <li><a href="lyear_pages_login.html"><i class="mdi mdi-logout-variant"></i> 退出登录</a>
+                                <li><a  href="/logout"><i class="mdi mdi-logout-variant"></i> 退出登录</a>
                                 </li>
                             </ul>
                         </li>
@@ -334,12 +334,12 @@
                     }
                 }
                 , {
-                    field: 'createTime', title: '创建时间', templet: function (res) {
+                    field: 'createTime', title: '创建时间',sort: true ,templet: function (res) {
                         return res.createTime != null ? (new Date(res.createTime)).Format("yyyy-MM-dd hh:mm:ss") : '无';
                     }
                 }
                 , {
-                    field: 'updateTime', title: '更新时间', templet: function (res) {
+                    field: 'updateTime', title: '更新时间',sort: true, templet: function (res) {
                         return res.updateTime != null ? (new Date(res.updateTime)).Format("yyyy-MM-dd hh:mm:ss") : '无';
                     }
                 }
@@ -377,7 +377,18 @@
                     if (result.code == 200) {
                         layer.msg('保存成功');
                         $('#starModal').modal("hide");
-                        table.reload();
+                        //执行重载
+                        var demoReload = $('#demoReload');
+                        table.reload('testReload', {
+                            page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                            ,where: {
+                                key: {
+                                    id: demoReload.val()
+                                }
+                            }
+                        });
                     } else {
                         layer.msg(result.msg);
                     }
