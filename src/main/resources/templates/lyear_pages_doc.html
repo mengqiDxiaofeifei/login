@@ -133,7 +133,7 @@
                             <span class="lyear-toggler-bar"></span>
                             <span class="lyear-toggler-bar"></span>
                         </div>
-                        <span class="navbar-page-title"> UI元素 - 文档列表 </span>
+                        <span class="navbar-page-title"> 账号列表 </span>
                     </div>
 
                     <ul class="topbar-right">
@@ -148,7 +148,7 @@
                                 </li>
                                 <li><a href="javascript:void(0)"><i class="mdi mdi-delete"></i> 清空缓存</a></li>
                                 <li class="divider"></li>
-                                <li><a  href="/logout"><i class="mdi mdi-logout-variant"></i> 退出登录</a>
+                                <li><a href="/logout"><i class="mdi mdi-logout-variant"></i> 退出登录</a>
                                 </li>
                             </ul>
                         </li>
@@ -177,7 +177,8 @@
                                                 用户名 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a tabindex="-1" href="javascript:void(0)" data-field="username">用户名</a>
+                                                <li><a tabindex="-1" href="javascript:void(0)"
+                                                       data-field="username">用户名</a>
                                                 </li>
                                                 <li><a tabindex="-1" href="javascript:void(0)"
                                                        data-field="telephone">电话</a></li>
@@ -192,10 +193,13 @@
                                 <div class="toolbar-btn-action">
                                     <a class="btn btn-primary m-r-5" onclick="addAccount()"><i class="mdi mdi-plus"
                                     ></i> 新增</a>
-                                    <a class="btn btn-success m-r-5" onclick="changeStatus('1')"><i class="mdi mdi-check"></i> 启用</a>
-                                    <a class="btn btn-warning m-r-5"onclick="changeStatus('0')"><i class="mdi mdi-block-helper"></i>
+                                    <a class="btn btn-success m-r-5" onclick="changeStatus('1')"><i
+                                            class="mdi mdi-check"></i> 启用</a>
+                                    <a class="btn btn-warning m-r-5" onclick="changeStatus('0')"><i
+                                            class="mdi mdi-block-helper"></i>
                                         禁用</a>
-                                    <a class="btn btn-danger" href="#!"><i class="mdi mdi-window-close"></i> 删除</a>
+                                    <a class="btn btn-danger" href="#!" onclick="delUser()"><i
+                                            class="mdi mdi-window-close"></i> 删除</a>
                                 </div>
                             </div>
                             <table class="layui-hide" id="demo" lay-filter="test"></table>
@@ -204,7 +208,7 @@
                             </div>
                             <script type="text/html" id="barDemo">
                                 <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail"
-                                   href="/common/formModel">查看</a>
+                                   id="statusId">禁/启</a>
                                 <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
                                 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
                             </script>
@@ -234,11 +238,11 @@
                                             <label class="col-sm-3 control-label">用户名:</label>
                                             <div class="col-sm-7">
                                                 <input type="text" name="username" lay-verify="required"
-                                                       placeholder="请输入" autocomplete="off"
+                                                       placeholder="请输入" autocomplete="off" id="usernameId"
                                                        class="layui-input">
                                             </div>
                                         </div>
-                                        <div class="form-group" >
+                                        <div class="form-group">
                                             <label class="col-sm-3 control-label">密码:</label>
                                             <div class="col-sm-7">
                                                 <input type="password" name="password" lay-verify="required"
@@ -250,21 +254,24 @@
                                             <label class="col-sm-3 control-label">邮箱:</label>
                                             <div class="col-sm-7">
                                                 <input type="text" name="email" placeholder="请输入" lay-verify="email"
-                                                       autocomplete="off" class="layui-input">
+                                                       autocomplete="off" class="layui-input" id="emailId">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label">手机号:</label>
                                             <div class="col-sm-7">
                                                 <input type="tel" name="telephone" lay-verify="required|phone"
-                                                       placeholder="请输入" autocomplete="off" class="layui-input">
+                                                       placeholder="请输入" autocomplete="off" class="layui-input"
+                                                       id="telephoneId">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="layui-form-item">
-                                        <div class="layui-input-block">
-                                            <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
-                                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                    <div class="form-group">
+                                        <div class="layui-form-item">
+                                            <div class="layui-input-block">
+                                                <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                                                <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -294,17 +301,15 @@
         });
     });
 
-
+    var table;
+    var layer;
+    var form;
+    var laypage;
     // url: "/account/accountList",
     layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element', 'slider', 'form'], function () {
-        var laydate = layui.laydate //日期
+        table = layui.table//表格
             , laypage = layui.laypage //分页
             , layer = layui.layer //弹层
-            , table = layui.table //表格
-            , carousel = layui.carousel //轮播
-            , upload = layui.upload //上传
-            , element = layui.element //元素操作
-            , slider = layui.slider //滑块
             , form = layui.form//表单
 
         //执行一个 table 实例
@@ -314,13 +319,13 @@
             , url: '/account/accountList' //数据接口
             , title: '用户表'
             , page: true //开启分页
-            ,id: 'testReload'
+            , id: 'testReload'
             , cols: [[ //表头
                 {type: 'checkbox', fixed: 'left'}
                 , {field: 'id', title: 'ID', fixed: 'left'}
                 , {field: 'username', title: '用户名'}
                 , {
-                    field: 'email', title: '邮箱',templet: function (res) {
+                    field: 'email', title: '邮箱', templet: function (res) {
                         return '<em>' + res.email + '</em>'
                     }
                 }
@@ -334,12 +339,12 @@
                     }
                 }
                 , {
-                    field: 'createTime', title: '创建时间',sort: true ,templet: function (res) {
+                    field: 'createTime', title: '创建时间', sort: true, templet: function (res) {
                         return res.createTime != null ? (new Date(res.createTime)).Format("yyyy-MM-dd hh:mm:ss") : '无';
                     }
                 }
                 , {
-                    field: 'updateTime', title: '更新时间',sort: true, templet: function (res) {
+                    field: 'updateTime', title: '更新时间', sort: true, templet: function (res) {
                         return res.updateTime != null ? (new Date(res.updateTime)).Format("yyyy-MM-dd hh:mm:ss") : '无';
                     }
                 }
@@ -363,6 +368,7 @@
             }
         });
 
+
         //提交表单
         form.on('submit(demo1)', function (data) {
             // layer.alert(JSON.stringify(data.field), {
@@ -383,7 +389,7 @@
                             page: {
                                 curr: 1 //重新从第 1 页开始
                             }
-                            ,where: {
+                            , where: {
                                 key: {
                                     id: demoReload.val()
                                 }
@@ -404,46 +410,109 @@
             var data = obj.data //获得当前行数据
                 , layEvent = obj.event; //获得 lay-event 对应的值
             if (layEvent === 'detail') {
-                layer.msg('查看操作');
+                var status = data.status;
+                layer.confirm("确定要" + (status == 0 ? "启用" : "禁用") + "吗?", {
+                    btn: ['确定', '取消'] //可以无限个按钮
+                }, function (index, layero) {
+                    var ids = new Array();
+                    ids[0] = data.id;
+                    status = status == 1 ? 0 : 1;
+                    $.ajax({
+                        url: "/account/updateStatusByids",
+                        type: "get",
+                        dataType: "json",
+                        data: {
+                            'ids': ids,
+                            'status': status
+                        },
+                        success: function (result) {
+                            if (result.code == 200) {
+                                layer.msg(status == 1 ? '启用成功' : '禁用成功');
+                                $('#starModal').modal("hide");
+                                //执行重载
+                                var demoReload = $('#demoReload');
+                                table.reload('testReload', {
+                                    page: {
+                                        curr: 1 //重新从第 1 页开始
+                                    }
+                                    , where: {
+                                        key: {
+                                            id: demoReload.val()
+                                        }
+                                    }
+                                });
+                            } else {
+                                layer.msg(result.msg);
+                            }
+                        }, error: function (result) {
+                            layer.msg(result.msg);
+                        }
+                    });
+                }, function (index) {
+
+                });
+
+
             } else if (layEvent === 'del') {
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del(); //删除对应行（tr）的DOM结构
+                layer.confirm('该操作不可逆，确定要删除吗?', function (index) {
                     layer.close(index);
                     //向服务端发送删除指令
+                    var ids = new Array();
+                    ids[0] = data.id;
+                    $.ajax({
+                        url: "/account/deleteUserByids",
+                        type: "get",
+                        dataType: "json",
+                        data: {
+                            'ids': ids,
+                        },
+                        success: function (result) {
+                            if (result.code == 200) {
+                                layer.msg("删除成功！");
+                                $('#starModal').modal("hide");
+                                //执行重载
+                                var demoReload = $('#demoReload');
+                                table.reload('testReload', {
+                                    page: {
+                                        curr: 1 //重新从第 1 页开始
+                                    }
+                                    , where: {
+                                        key: {
+                                            id: demoReload.val()
+                                        }
+                                    }
+                                });
+                            } else {
+                                layer.msg(result.msg);
+                            }
+                        }, error: function (result) {
+                            layer.msg(result.msg);
+                        }
+                    });
+
                 });
             } else if (layEvent === 'edit') {
                 $("#starModal").modal();
                 $("#accountText").text("编辑用户");
                 $("#userId").val(data.id);
-                $("#passwordId").attr('disabled','disabled');
+               // $("#accountFormId button[type='reset']").css('display', 'none');
+                $.ajax({
+                    url: "/account/findUserById",
+                    type: "get",
+                    dataType: "json",
+                    data: {
+                        'id': data.id
+                    },
+                    success: function (result) {
+                        var user = result.data;
+                        $("#passwordId").attr('disabled', 'disabled');
+                        $("#usernameId").val(user.username);
+                        $("#passwordId").val(user.password);
+                        $("#emailId").val(user.email);
+                        $("#telephoneId").val(user.telephone);
+                    }
+                });
             }
-        });
-
-        //监听头工具栏事件
-        table.on('toolbar(test)', function(obj){
-            var checkStatus = table.checkStatus(obj.config.id)
-                ,data = checkStatus.data; //获取选中的数据
-            switch(obj.event){
-                case 'add':
-                    layer.msg('添加');
-                    break;
-                case 'update':
-                    if(data.length === 0){
-                        layer.msg('请选择一行');
-                    } else if(data.length > 1){
-                        layer.msg('只能同时编辑一个');
-                    } else {
-                        layer.alert('编辑 [id]：'+ checkStatus.data[0].id);
-                    }
-                    break;
-                case 'delete':
-                    if(data.length === 0){
-                        layer.msg('请选择一行');
-                    } else {
-                        layer.msg('删除');
-                    }
-                    break;
-            };
         });
 
 
@@ -461,16 +530,128 @@
         });
     });
 
+
+    var callbackdata = function () {
+        var checkStatus = table.checkStatus('testReload')
+            , data = checkStatus.data;
+        return data;
+    }
+
     function addAccount() {
         $("#starModal").modal();
         $("#userId").val("");
         $("#accountText").text("新增用户");
         $("#passwordId").removeAttr('disabled');
+        resetForm();
+        //$("#accountFormId button[type='reset']").css('display', 'block');
     }
 
+    function resetForm() {
+        document.getElementById("accountFormId").reset();
+        layui.form.render();
+    }
+
+
+    //禁用，启用
     function changeStatus(status) {
+        var arr = callbackdata();
+        if (arr.length == 0) {
+            layer.msg("请先选择！");
+        } else {
+            layer.confirm("确定要" + (status == 1 ? "启用" : "禁用") + "吗?", {
+                btn: ['确定', '取消'] //可以无限个按钮
+            }, function (index, layero) {
+                var arr = callbackdata();
+                var ids = new Array();
+                arr.forEach(function (item, index) {
+                    ids[index] = item.id;
+                })
+                $.ajax({
+                    url: "/account/updateStatusByids",
+                    type: "get",
+                    dataType: "json",
+                    data: {
+                        'ids': ids,
+                        'status': status
+                    },
+                    success: function (result) {
+                        if (result.code == 200) {
+                            layer.msg(status == 1 ? '启用成功' : '禁用成功');
+                            $('#starModal').modal("hide");
+                            //执行重载
+                            var demoReload = $('#demoReload');
+                            table.reload('testReload', {
+                                page: {
+                                    curr: 1 //重新从第 1 页开始
+                                }
+                                , where: {
+                                    key: {
+                                        id: demoReload.val()
+                                    }
+                                }
+                            });
+                        } else {
+                            layer.msg(result.msg);
+                        }
+                    }, error: function (result) {
+                        layer.msg(result.msg);
+                    }
+                });
+            }, function (index) {
 
+            });
+        }
     }
+
+    //删除用户
+    function delUser() {
+        var arr = callbackdata();
+        if (arr.length == 0) {
+            layer.msg("请先选择！");
+        } else {
+            layer.confirm("该操作不可逆，确定要删除吗?", {
+                btn: ['确定', '取消'] //可以无限个按钮
+            }, function (index, layero) {
+                var arr = callbackdata();
+                var ids = new Array();
+                arr.forEach(function (item, index) {
+                    ids[index] = item.id;
+                })
+                $.ajax({
+                    url: "/account/deleteUserByids",
+                    type: "get",
+                    dataType: "json",
+                    data: {
+                        'ids': ids,
+                    },
+                    success: function (result) {
+                        if (result.code == 200) {
+                            layer.msg("删除成功！");
+                            $('#starModal').modal("hide");
+                            //执行重载
+                            var demoReload = $('#demoReload');
+                            table.reload('testReload', {
+                                page: {
+                                    curr: 1 //重新从第 1 页开始
+                                }
+                                , where: {
+                                    key: {
+                                        id: demoReload.val()
+                                    }
+                                }
+                            });
+                        } else {
+                            layer.msg(result.msg);
+                        }
+                    }, error: function (result) {
+                        layer.msg(result.msg);
+                    }
+                });
+            }, function (index) {
+            });
+        }
+    }
+
 
 </script>
 </body>

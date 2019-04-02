@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -58,7 +59,7 @@ public class AccountController {
      */
     @ResponseBody
     @RequestMapping("/updateStatusByids")
-    public Response updateStatusByids(List<Integer> ids, Integer status){
+    public Response updateStatusByids(@RequestParam("ids[]") List<Integer> ids,@RequestParam("status") Integer status){
         return accountService.updateStatusByids(ids,status);
     }
 
@@ -69,6 +70,16 @@ public class AccountController {
     @RequestMapping("/findUserById")
     public Response findUserById(Integer id){
         return accountService.findUserById(id);
+    }
+
+
+    /**
+     * 删除用户
+     */
+    @ResponseBody
+    @RequestMapping("/deleteUserByids")
+    public Response deleteUserByids(@RequestParam("ids[]") List<Integer> ids){
+        return accountService.deleteUserByids(ids);
     }
 
 }

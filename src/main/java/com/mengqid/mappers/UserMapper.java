@@ -8,10 +8,10 @@ import org.apache.ibatis.annotations.Update;
 
 public interface UserMapper extends MyMapper<User> {
 
-    @Select("SELECT `id`, `user_uuid`, `username`, `password`, `email`, `telephone`, `role`, `image`, `last_ip`, `last_time` from `tb_user`  where username = #{username}")
+    @Select("SELECT `id`, `user_uuid`, `username`, `password`, `email`, `telephone`, `role`, `image`, `last_ip`, `last_time` from `tb_user`  where username = #{username} and status  = 1")
     User findByUsername(@Param("username") String username);
 
 
     @Update("UPDATE `tb_user` SET `status`=#{status} where id = #{id}")
-    void updateStatusById(Integer id, Integer status);
+    void updateStatusById(@Param("id") Integer id, @Param("status") Integer status);
 }
