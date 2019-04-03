@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title></title>
+    <link rel="icon" href="/css/favicon.ico" type="image/ico">
+    <meta name="author" content="yinqi">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="/css/style.min.css" rel="stylesheet">
+    <link href="/pulgins.layui/css/layui.css" rel="stylesheet">
+    <style>
+        .upload-base {
+            margin-left: 165px;
+        }
+
+        .btn-base {
+            margin-left: 130px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+        <!--左侧导航-->
+        <aside class="lyear-layout-sidebar">
+
+            <!-- logo -->
+            <div id="logo" class="sidebar-header">
+                <a href="index.html"><img src="/images/logo-sidebar.png" title="LightYear" alt="LightYear"/></a>
+            </div>
+            <div class="lyear-layout-sidebar-scroll">
+
+                <!--<nav class="sidebar-main">-->
+                <!--<ul class="nav nav-drawer">-->
+                <!--<li class="nav-item active"><a href="index.html"><i class="mdi mdi-home"></i> 后台首页</a></li>-->
+                <!--<li class="nav-item nav-item-has-subnav">-->
+                <!--<a href="javascript:void(0)"><i class="mdi mdi-palette"></i> UI 元素</a>-->
+                <!--<ul class="nav nav-subnav">-->
+                <!--<li><a href="lyear_ui_buttons.html">按钮</a></li>-->
+                <!--<li><a href="lyear_ui_cards.html">卡片</a></li>-->
+                <!--<li><a href="lyear_ui_grid.html">格栅</a></li>-->
+                <!--<li><a href="lyear_ui_icons.html">图标</a></li>-->
+                <!--<li><a href="lyear_ui_tables.html">表格</a></li>-->
+                <!--<li><a href="lyear_ui_modals.html">模态框</a></li>-->
+                <!--<li><a href="lyear_ui_tooltips_popover.html">提示 / 弹出框</a></li>-->
+                <!--<li><a href="lyear_ui_alerts.html">警告框</a></li>-->
+                <!--<li><a href="lyear_ui_pagination.html">分页</a></li>-->
+                <!--<li><a href="lyear_ui_progress.html">进度条</a></li>-->
+                <!--<li><a href="lyear_ui_tabs.html">标签页</a></li>-->
+                <!--<li><a href="lyear_ui_typography.html">排版</a></li>-->
+                <!--<li><a href="lyear_ui_other.html">其他</a></li>-->
+                <!--</ul>-->
+                <!--</li>-->
+                <!--<li class="nav-item nav-item-has-subnav">-->
+                <!--<a href="javascript:void(0)"><i class="mdi mdi-format-align-justify"></i> 表单</a>-->
+                <!--<ul class="nav nav-subnav">-->
+                <!--<li><a href="lyear_forms_elements.html">基本元素</a></li>-->
+                <!--<li><a href="lyear_forms_radio.html">单选框</a></li>-->
+                <!--<li><a href="lyear_forms_checkbox.html">复选框</a></li>-->
+                <!--<li><a href="lyear_forms_switch.html">开关</a></li>-->
+                <!--</ul>-->
+                <!--</li>-->
+                <!--<li class="nav-item nav-item-has-subnav">-->
+                <!--<a href="javascript:void(0)"><i class="mdi mdi-file-outline"></i> 示例页面</a>-->
+                <!--<ul class="nav nav-subnav">-->
+                <!--<li><a href="lyear_pages_doc.html">文档列表</a></li>-->
+                <!--<li><a href="lyear_pages_gallery.html">图库列表</a></li>-->
+                <!--<li><a href="lyear_pages_config.html">网站配置</a></li>-->
+                <!--<li><a href="lyear_pages_rabc.html">设置权限</a></li>-->
+                <!--<li><a href="lyear_pages_add_doc.html">新增文档</a></li>-->
+                <!--<li><a href="lyear_pages_login.html">登录页面</a></li>-->
+                <!--</ul>-->
+                <!--</li>-->
+                <!--<li class="nav-item nav-item-has-subnav">-->
+                <!--<a href="javascript:void(0)"><i class="mdi mdi-language-javascript"></i> JS 插件</a>-->
+                <!--<ul class="nav nav-subnav">-->
+                <!--<li><a href="lyear_js_datepicker.html">日期选取器</a></li>-->
+                <!--<li><a href="lyear_js_sliders.html">滑块</a></li>-->
+                <!--<li><a href="lyear_js_colorpicker.html">选色器</a></li>-->
+                <!--<li><a href="lyear_js_chartjs.html">Chart.js</a></li>-->
+                <!--<li><a href="lyear_js_jconfirm.html">对话框</a></li>-->
+                <!--<li><a href="lyear_js_tags_input.html">标签插件</a></li>-->
+                <!--<li><a href="lyear_js_notify.html">通知消息</a></li>-->
+                <!--</ul>-->
+                <!--</li>-->
+                <!--<li class="nav-item nav-item-has-subnav">-->
+                <!--<a href="javascript:void(0)"><i class="mdi mdi-menu"></i> 多级菜单</a>-->
+                <!--<ul class="nav nav-subnav">-->
+                <!--<li><a href="#!">一级菜单</a></li>-->
+                <!--<li class="nav-item nav-item-has-subnav">-->
+                <!--<a href="#!">一级菜单</a>-->
+                <!--<ul class="nav nav-subnav">-->
+                <!--<li><a href="#!">二级菜单</a></li>-->
+                <!--<li class="nav-item nav-item-has-subnav">-->
+                <!--<a href="#!">二级菜单</a>-->
+                <!--<ul class="nav nav-subnav">-->
+                <!--<li><a href="#!">三级菜单</a></li>-->
+                <!--<li><a href="#!">三级菜单</a></li>-->
+                <!--</ul>-->
+                <!--</li>-->
+                <!--</ul>-->
+                <!--</li>-->
+                <!--<li><a href="#!">一级菜单</a></li>-->
+                <!--</ul>-->
+                <!--</li>-->
+                <!--<li class="nav-item nav-item-has-subnav active open">-->
+                <!--<a href="javascript:void(0)"><i class="mdi mdi-menu"></i> 系统管理</a>-->
+                <!--<ul class="nav nav-subnav">-->
+                <!--<li class="active"><a href="/manage/account/accountManage">账号管理</a></li>-->
+                <!--<li>-->
+                <!--<a href="#!">角色管理</a>-->
+                <!--</li>-->
+                <!--<li><a href="#!">权限管理</a></li>-->
+                <!--</ul>-->
+                <!--</li>-->
+                <!--</ul>-->
+                <!--</nav>-->
+                <nav class="sidebar-main">
+                    <ul class="nav nav-drawer">
+                        <li class="nav-item active"><a href="index.html"><i class="mdi mdi-home"></i> 后台首页</a></li>
+                        <li class="nav-item nav-item-has-subnav">
+                            <a href="javascript:void(0)"><i class="mdi mdi-menu"></i> 系统管理</a>
+                            <ul class="nav nav-subnav">
+                                <li><a href="/manage/account/accountManage">账号管理</a></li>
+                                <li>
+                                    <a href="#!">角色管理</a>
+                                </li>
+                                <li><a href="#!">权限管理</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item nav-item-has-subnav active open">
+                            <a href="javascript:void(0)"><i class="mdi mdi-palette"></i>门户首页</a>
+                            <ul class="nav nav-subnav">
+                                <li class="active"><a href="/manage/banner/view">banner管理</a></li>
+                                <li><a href="lyear_ui_cards.html">分类管理</a></li>
+                                <li><a href="lyear_ui_grid.html">标签管理</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <p class="copyright">Copyright &copy; 2019. <a target="_blank"
+                                                                   href="http://lyear.itshubao.com">IT书包</a> All rights
+                        reserved.</p>
+                </div>
+            </div>
+
+        </aside>
+        <!--End 左侧导航-->
+
+        <!--头部信息-->
+        <header class="lyear-layout-header">
+
+            <nav class="navbar navbar-default">
+                <div class="topbar">
+
+                    <div class="topbar-left">
+                        <div class="lyear-aside-toggler">
+                            <span class="lyear-toggler-bar"></span>
+                            <span class="lyear-toggler-bar"></span>
+                            <span class="lyear-toggler-bar"></span>
+                        </div>
+                        <span class="navbar-page-title"> banner管理 </span>
+                    </div>
+
+                    <ul class="topbar-right">
+                        <li class="dropdown dropdown-profile">
+                            <a href="javascript:void(0)" data-toggle="dropdown">
+                                <img class="img-avatar img-avatar-48 m-r-10" src="/images/users/avatar.jpg" alt="笔下光年"/>
+                                <span>笔下光年 <span class="caret"></span></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li><a href="lyear_pages_profile.html"><i class="mdi mdi-account"></i> 个人信息</a></li>
+                                <li><a href="lyear_pages_edit_pwd.html"><i class="mdi mdi-lock-outline"></i> 修改密码</a>
+                                </li>
+                                <li><a href="javascript:void(0)"><i class="mdi mdi-delete"></i> 清空缓存</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/logout"><i class="mdi mdi-logout-variant"></i> 退出登录</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </div>
+            </nav>
+
+        </header>
+        <!--End 头部信息-->
+
+        <!--页面主要内容-->
+        <main class="lyear-layout-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-toolbar clearfix">
+                                <form class="pull-right search-bar" method="get" action="#!" role="form">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" value="" name="keyword"
+                                               placeholder="请输入名称">
+                                    </div>
+                                </form>
+                                <div class="toolbar-btn-action">
+                                    <a class="btn btn-primary m-r-5" onclick="addBanner()"><i class="mdi mdi-plus"
+                                    ></i> 新增</a>
+                                </div>
+                            </div>
+                            <table class="layui-hide" id="demo" lay-filter="test"></table>
+                            <div class="layui-tab-item">
+                                <div id="pageDemo"></div>
+                            </div>
+                            <script type="text/html" id="barDemo">
+                                <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail"
+                                   id="statusId">禁/启</a>
+                                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!--End 页面主要内容-->
+        <div id="starModal" class="modal fade" style="display: none;">
+            <div class="modal-dialog model-put">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" id="accountText"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="portlet-body form">
+                                <form class="layui-form" role="form" id="accountFormId"
+                                      enctype="multipart/form-data"
+                                      method="post">
+                                    <div class="form-body">
+                                        <input type="hidden" name="id" id="banndId">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">名称:</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" name="name" lay-verify="required"
+                                                       placeholder="请输入" autocomplete="off" id="nameId"
+                                                       class="layui-input">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">标题:</label>
+                                            <div class="col-sm-7">
+                                                <input type="password" name="title" lay-verify="required"
+                                                       placeholder="请输入" autocomplete="off"
+                                                       class="layui-input" id="titleId">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">广告语:</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" name="adviceWord" placeholder="请输入"
+                                                       autocomplete="off" class="layui-input" id="adviceWordId">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">banner图片:</label>
+                                            <div class="col-sm-7">
+                                                <div class="layui-upload-drag" id="test10">
+                                                    <i class="layui-icon"></i>
+                                                    <p>点击上传，或将文件拖拽到此处</p>
+                                                </div>
+                                                <img src="" alt=""
+                                                     style="border: 1px dashed #e2e2e2;width: 258px;height: 135px;text-align: center;display: none" id="imgId">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="layui-form-item">
+                                            <div class="layui-input-block">
+                                                <button class="layui-btn btn-base" lay-submit="" lay-filter="demo1">
+                                                    立即提交
+                                                </button>
+                                                <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="/js/main.min.js"></script>
+<script type="text/javascript" src="/pulgins.layui/layui.js"></script>
+<script type="text/javascript" src="/js/datatables.js"></script>
+<script type="text/javascript" src="/js/date.format.js"></script>
+<script type="text/javascript" th:inline="none">
+    var table;
+    var layer;
+    var form;
+    var laypage;
+    var upload;
+    // url: "/manage/account/accountList",
+    layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element', 'slider', 'form'], function () {
+        table = layui.table//表格
+            , laypage = layui.laypage //分页
+            , layer = layui.layer //弹层
+            , form = layui.form//表单
+            , upload = layui.upload //上传
+
+        //拖拽上传
+        upload.render({
+            elem: '#test10'
+            , url: 'http://hd215.api.yesapi.cn//?s=App.CDN.UploadImg'
+            , data: {
+                'app_key': 'C5BFFAE19E27769EA5A50CBDAE7BAD24',
+            }  //额外参数
+            , done: function (res) {
+                console.log(res);
+                if (res.data.err_code == 0) {
+                    $("#test10").css('display', 'none');
+                    $("#imgId").css('display','block');
+                    $("#imgId").attr('src',res.data.url);
+                    layer.msg("图片上传成功！");
+                } else {
+                    layer.msg("图片上传失败！");
+                }
+            }
+        });
+
+        //执行一个 table 实例
+        table.render({
+            elem: '#demo'
+            , height: 500
+            , url: '/manage/banner/bannerList' //数据接口
+            , title: 'banner表'
+            , page: true //开启分页
+            , id: 'testReload'
+            , cols: [[ //表头
+                {field: 'id', title: 'ID', fixed: 'left'}
+                , {field: 'name', title: '名称'}
+                , {field: 'title', title: '标题'}
+                , {field: 'adviceWord', title: '广告语'}
+                , {
+                    field: 'imgUrl', title: '图片', templet: function (res) {
+                        return "<img src='" + res.imgUrl + "'></img>"
+                    }
+                }
+                , {
+                    field: 'status', title: '状态', templet: function (res) {
+                        return res.status == 1 ? '启用' : '禁用'
+                    }
+                }
+                , {
+                    field: 'createTime', title: '创建时间', sort: true, templet: function (res) {
+                        return res.createTime != null ? (new Date(res.createTime)).Format("yyyy-MM-dd hh:mm:ss") : '无';
+                    }
+                }
+                , {
+                    field: 'updateTime', title: '更新时间', sort: true, templet: function (res) {
+                        return res.updateTime != null ? (new Date(res.updateTime)).Format("yyyy-MM-dd hh:mm:ss") : '无';
+                    }
+                }
+                , {fixed: 'right', width: 165, align: 'center', toolbar: '#barDemo'}
+            ]]
+        });
+
+        //自定义验证规则
+        form.verify({
+            title: function (value) {
+                if (value.length < 5) {
+                    return '标题至少得5个字符啊';
+                }
+            }
+            , pass: [
+                /^[\S]{6,12}$/
+                , '密码必须6到12位，且不能出现空格'
+            ]
+            , content: function (value) {
+                layedit.sync(editIndex);
+            }
+        });
+
+
+        //提交表单
+        form.on('submit(demo1)', function (data) {
+            // layer.alert(JSON.stringify(data.field), {
+            //     title: '最终的提交信息'
+            // })
+            $.ajax({
+                url: "/manage/banner/saveBanner",
+                type: "POST",
+                dataType: "json",
+                data: data.field,
+                success: function (result) {
+                    if (result.code == 200) {
+                        layer.msg('保存成功');
+                        $('#starModal').modal("hide");
+                        //执行重载
+                        var demoReload = $('#demoReload');
+                        table.reload('testReload', {
+                            page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                            , where: {
+                                key: {
+                                    id: demoReload.val()
+                                }
+                            }
+                        });
+                    } else {
+                        layer.msg(result.msg);
+                    }
+                }, error: function (result) {
+                    layer.msg(result.msg);
+                }
+            });
+            return false;
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+            if (layEvent === 'detail') {
+                var status = data.status;
+                layer.confirm("确定要" + (status == 0 ? "启用" : "禁用") + "吗?", {
+                    btn: ['确定', '取消'] //可以无限个按钮
+                }, function (index, layero) {
+                    var ids = new Array();
+                    ids[0] = data.id;
+                    status = status == 1 ? 0 : 1;
+                    $.ajax({
+                        url: "/manage/banner/updateStatusByids",
+                        type: "get",
+                        dataType: "json",
+                        data: {
+                            'ids': ids,
+                            'status': status
+                        },
+                        success: function (result) {
+                            if (result.code == 200) {
+                                layer.msg(status == 1 ? '启用成功' : '禁用成功');
+                                $('#starModal').modal("hide");
+                                //执行重载
+                                var demoReload = $('#demoReload');
+                                table.reload('testReload', {
+                                    page: {
+                                        curr: 1 //重新从第 1 页开始
+                                    }
+                                    , where: {
+                                        key: {
+                                            id: demoReload.val()
+                                        }
+                                    }
+                                });
+                            } else {
+                                layer.msg(result.msg);
+                            }
+                        }, error: function (result) {
+                            layer.msg(result.msg);
+                        }
+                    });
+                }, function (index) {
+
+                });
+            } else if (layEvent === 'del') {
+                layer.confirm('该操作不可逆，确定要删除吗?', function (index) {
+                    layer.close(index);
+                    //向服务端发送删除指令
+                    var ids = new Array();
+                    ids[0] = data.id;
+                    $.ajax({
+                        url: "/manage/banner/deleteBannerByids",
+                        type: "get",
+                        dataType: "json",
+                        data: {
+                            'ids': ids,
+                        },
+                        success: function (result) {
+                            if (result.code == 200) {
+                                layer.msg("删除成功！");
+                                $('#starModal').modal("hide");
+                                //执行重载
+                                var demoReload = $('#demoReload');
+                                table.reload('testReload', {
+                                    page: {
+                                        curr: 1 //重新从第 1 页开始
+                                    }
+                                    , where: {
+                                        key: {
+                                            id: demoReload.val()
+                                        }
+                                    }
+                                });
+                            } else {
+                                layer.msg(result.msg);
+                            }
+                        }, error: function (result) {
+                            layer.msg(result.msg);
+                        }
+                    });
+
+                });
+            } else if (layEvent === 'edit') {
+                $("#starModal").modal();
+                $("#accountText").text("编辑");
+                $("#banndId").val(data.id);
+                // $("#accountFormId button[type='reset']").css('display', 'none');
+                $.ajax({
+                    url: "/manage/banner/findBannerById",
+                    type: "get",
+                    dataType: "json",
+                    data: {
+                        'id': data.id
+                    },
+                    success: function (result) {
+                        var banner = result.data;
+                        $("#passwordId").attr('disabled', 'disabled');
+                        $("#nameId").val(banner.name);
+                        $("#titleId").val(banner.title);
+                        $("#adviceWordId").val(banner.adviceWord);
+                        $("#telephoneId").val(user.telephone);
+                    }
+                });
+            }
+        });
+
+
+        //分页
+        laypage.render({
+            elem: 'pageDemo' //分页容器的id
+            , count: 100 //总页数
+            , skin: '#1E9FFF' //自定义选中色值
+            //,skip: true //开启跳页
+            , jump: function (obj, first) {
+                if (!first) {
+                    layer.msg('第' + obj.curr + '页', {offset: 'b'});
+                }
+            }
+        });
+    });
+
+
+    function addBanner() {
+        $("#starModal").modal();
+        $("#banndId").val("");
+        $("#accountText").text("新增");
+        $("#passwordId").removeAttr('disabled');
+        resetForm();
+        //$("#accountFormId button[type='reset']").css('display', 'block');
+    }
+
+    function resetForm() {
+        document.getElementById("accountFormId").reset();
+        layui.form.render();
+    }
+</script>
+</body>
+</html>

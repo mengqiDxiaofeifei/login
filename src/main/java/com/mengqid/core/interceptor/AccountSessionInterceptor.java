@@ -24,6 +24,8 @@ public class AccountSessionInterceptor extends HandlerInterceptorAdapter {
                              Object handler) {
         //TODO  全局账号对象  accountSeesionHolder
         //TODO  拦截请求 记录操作日志
+
+
         return true;
     }
 

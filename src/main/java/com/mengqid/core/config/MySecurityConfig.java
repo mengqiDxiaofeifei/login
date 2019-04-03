@@ -32,11 +32,13 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
         //定制请求的授权规则
         http.csrf().disable().authorizeRequests()
                 // 访问：这些路径 无需登录认证权限
-                .antMatchers("/login","/itnl/checkCode","/itnl/validateCode").permitAll().anyRequest().authenticated().and()
+                .antMatchers("/**")
+//                .antMatchers("/login","/itnl/checkCode","/itnl/validateCode","/index")
+                .permitAll().anyRequest().authenticated().and()
                 //开启登录功能
                 .formLogin()
                 .usernameParameter("username")
-                .passwordParameter("password").loginPage("/login").defaultSuccessUrl("/home")
+                .passwordParameter("password").loginPage("/login").defaultSuccessUrl("/home_static")
                 .failureHandler(myAuthenctiationFailureHandler);
 
         //注销
@@ -58,6 +60,6 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         //解决静态资源被拦截的问题
-        web.ignoring().antMatchers( "/js/**","/images/**","/css/**","/fonts/**","/favicon.ico","/plugins/**");
+        web.ignoring().antMatchers( "/js/**","/images/**","/css/**","/fonts/**","/favicon.ico","/pulgins/**","/home_static/**");
     }
 }

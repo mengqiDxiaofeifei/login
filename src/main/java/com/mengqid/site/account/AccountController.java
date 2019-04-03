@@ -5,10 +5,7 @@ import com.mengqid.entity.common.PageRequestVo;
 import com.mengqid.entity.common.PageResult;
 import com.mengqid.entity.common.Response;
 import com.mengqid.entity.login.User;
-import io.swagger.models.auth.In;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,7 +15,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Controller
-@RequestMapping("/account")
+@RequestMapping("/manage/account")
 public class AccountController {
 
     @Resource
