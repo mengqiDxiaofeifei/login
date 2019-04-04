@@ -36,13 +36,13 @@ public class MyAuthenctiationSuccessHandler implements AuthenticationSuccessHand
         user.setLast_time(new Date());
         userMapper.updateByPrimaryKeySelective(user);
         if (!CheckUtil.isEmpty(user)) {
-            if (null == user && 0 == user.getType()) {
-                response.sendRedirect("/home_resouce");
+            if (null != user && 0 == user.getType()) {
+                response.sendRedirect("/home");
             } else {
                 response.sendRedirect("/index");
             }
         } else {
-            response.sendRedirect("/home_resouce");
+            response.sendRedirect("/error");
         }
     }
 }
