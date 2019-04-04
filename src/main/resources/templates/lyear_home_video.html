@@ -15,6 +15,10 @@
             margin-left: 165px;
         }
 
+        .video-base {
+            margin-left: 16px;
+        }
+
         .btn-base {
             margin-left: 130px;
         }
@@ -134,10 +138,10 @@
                         <li class="nav-item nav-item-has-subnav active open">
                             <a href="javascript:void(0)"><i class="mdi mdi-palette"></i>门户首页</a>
                             <ul class="nav nav-subnav">
-                                <li class="active"><a href="/manage/banner/view">banner管理</a></li>
+                                <li><a href="/manage/banner/view">banner管理</a></li>
                                 <li><a href="/manage/category/view">分类管理</a></li>
                                 <li><a href="/manage/tag/view">标签管理</a></li>
-                                <li><a href="/manage/video/view">视频管理</a></li>
+                                <li class="active"><a href="/manage/video/view">视频管理</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -241,7 +245,7 @@
                                       enctype="multipart/form-data"
                                       method="post">
                                     <div class="form-body">
-                                        <input type="hidden" name="id" id="banndId">
+                                        <input type="hidden" name="id" id="videoId">
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label">名称:</label>
                                             <div class="col-sm-7">
@@ -251,22 +255,43 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label">标题:</label>
+                                            <label class="col-sm-3 control-label">年份:</label>
                                             <div class="col-sm-7">
-                                                <input type="password" name="title" lay-verify="required"
-                                                       placeholder="请输入" autocomplete="off"
-                                                       class="layui-input" id="titleId">
+                                                <input type="text" class="layui-input" id="yearInput"
+                                                       placeholder="请选择年份"
+                                                       lay-verify="required" name="year">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label">广告语:</label>
+                                            <label class="col-sm-3 control-label">星级:</label>
                                             <div class="col-sm-7">
-                                                <input type="text" name="adviceWord" placeholder="请输入"
-                                                       autocomplete="off" class="layui-input" id="adviceWordId">
+                                                <select name="star" lay-filter="aihao" lay-verify="required"
+                                                        id="starId">
+                                                    <option value="" selected="">请选择</option>
+                                                    <option value="1">1星</option>
+                                                    <option value="2">2星</option>
+                                                    <option value="3">3星</option>
+                                                    <option value="4">4星</option>
+                                                    <option value="5">5星</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label">banner图片:</label>
+                                            <label class="col-sm-3 control-label">分类:</label>
+                                            <div class="col-sm-7">
+                                                <select name="category" lay-filter="aihao" lay-verify="required"
+                                                        id="categoryId">
+                                                    <option value="" selected="">请选择</option>
+                                                    <option value="1">分类一</option>
+                                                    <option value="2">分类二</option>
+                                                    <option value="3">分类三</option>
+                                                    <option value="4">分类四</option>
+                                                    <option value="5">分类五</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">视频封面图:</label>
                                             <div class="col-sm-7">
                                                 <div class="layui-upload-drag" id="test10">
                                                     <i class="layui-icon"></i>
@@ -275,6 +300,19 @@
                                                 <img src="" alt=""
                                                      style="border: 1px dashed #e2e2e2;width: 258px;height: 135px;text-align: center;display: none"
                                                      id="imgId">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">视频:</label>
+                                            <button type="button" class="layui-btn video-base" id="test5"><i
+                                                    class="layui-icon"></i>上传视频
+                                            </button>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">电影背景故事描述:</label>
+                                            <div class="col-sm-7">
+                                                <textarea placeholder="请输入内容" class="layui-textarea" name="story"
+                                                          id="storyId"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -312,13 +350,25 @@
     var form;
     var laypage;
     var upload;
+    var laydate;
+    var rate;
     // url: "/manage/account/accountList",
-    layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element', 'slider', 'form'], function () {
+    layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element', 'slider', 'form', 'rate'], function () {
         table = layui.table//表格
             , laypage = layui.laypage //分页
             , layer = layui.layer //弹层
             , form = layui.form//表单
             , upload = layui.upload //上传
+            , laydate = layui.laydate
+            , rate = layui.rate;
+        //
+        //年范围
+        laydate.render({
+            elem: '#yearInput'
+            , type: 'year'
+            , range: true
+        });
+
 
         //拖拽上传
         upload.render({
@@ -340,22 +390,41 @@
             }
         });
 
+        //上传视频
+        upload.render({
+            elem: '#test5'
+            , url: '/upload/'
+            , accept: 'video' //视频
+            , done: function (res) {
+                console.log(res)
+            }
+        });
+
         //执行一个 table 实例
         table.render({
             elem: '#demo'
             , height: 500
-            , url: '/manage/banner/bannerList' //数据接口
-            , title: 'banner表'
+            , url: '/manage/video/videoList' //数据接口
+            , title: 'video表'
             , page: true //开启分页
             , id: 'testReload'
             , cols: [[ //表头
                 {field: 'id', title: 'ID', fixed: 'left'}
                 , {field: 'name', title: '名称'}
-                , {field: 'title', title: '标题'}
-                , {field: 'adviceWord', title: '广告语'}
                 , {
-                    field: 'imgUrl', title: '图片', templet: function (res) {
-                        return "<img src='" + res.imgUrl + "'></img>"
+                    field: 'star', title: '星级', templet: function (res) {
+                        var html = "";
+                        // for (var i =0; i < res.star ;i++) {
+                        //     html += "<span class='glyphicon glyphicon-star'></span>";
+                        // }
+                        return res.star != 0 ? res.star + "星" : "无";
+                    }
+                }
+                , {field: 'year', title: '年份'}
+                , {field: 'category', title: '分类'}
+                , {
+                    field: 'bgImgUrl', title: '图片', templet: function (res) {
+                        return "<img src='" + res.bgImgUrl + "'></img>"
                     }
                 }
                 , {
@@ -400,7 +469,7 @@
             //     title: '最终的提交信息'
             // })
             $.ajax({
-                url: "/manage/banner/saveBanner",
+                url: "/manage/video/saveVideo",
                 type: "POST",
                 dataType: "json",
                 data: data.field,
@@ -443,7 +512,7 @@
                     ids[0] = data.id;
                     status = status == 1 ? 0 : 1;
                     $.ajax({
-                        url: "/manage/banner/updateStatusByids",
+                        url: "/manage/video/updateStatusByids",
                         type: "get",
                         dataType: "json",
                         data: {
@@ -483,7 +552,7 @@
                     var ids = new Array();
                     ids[0] = data.id;
                     $.ajax({
-                        url: "/manage/banner/deleteBannerByids",
+                        url: "/manage/video/deleteVideoByids",
                         type: "get",
                         dataType: "json",
                         data: {
@@ -517,22 +586,25 @@
             } else if (layEvent === 'edit') {
                 $("#starModal").modal();
                 $("#accountText").text("编辑");
-                $("#banndId").val(data.id);
+                $("#videoId").val(data.id);
                 // $("#accountFormId button[type='reset']").css('display', 'none');
                 $.ajax({
-                    url: "/manage/banner/findBannerById",
+                    url: "/manage/video/findVideoById",
                     type: "get",
                     dataType: "json",
                     data: {
                         'id': data.id
                     },
                     success: function (result) {
-                        var banner = result.data;
+                        var video = result.data;
                         $("#passwordId").attr('disabled', 'disabled');
-                        $("#nameId").val(banner.name);
-                        $("#titleId").val(banner.title);
-                        $("#adviceWordId").val(banner.adviceWord);
-                        $("#telephoneId").val(user.telephone);
+                        $("#nameId").val(video.name);
+                        $("#yearInput").val(video.year);
+                        $("#starId").val(video.star);
+                        $("#categoryId").val(video.category);
+                        $("#storyId").val(video.story);
+                        form.render();
+                        //TODO 图片视频
                     }
                 });
             }
@@ -556,7 +628,7 @@
 
     function addBanner() {
         $("#starModal").modal();
-        $("#banndId").val("");
+        $("#videoId").val("");
         $("#accountText").text("新增");
         $("#passwordId").removeAttr('disabled');
         resetForm();

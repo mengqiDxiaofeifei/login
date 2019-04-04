@@ -21,7 +21,7 @@ public class CommonUtil {
             pageResult.setMsg("success");
         }else {
             pageResult.setCode(-1);
-            pageResult.setMsg("error");
+            pageResult.setMsg("暂无数据");
         }
         pageResult.setCount(page.getTotal());
         return pageResult;

@@ -1,9 +1,9 @@
-package com.mengqid.site.home.banner;
+package com.mengqid.site.home.video;
 
-import com.mengqid.entity.banner.Banner;
 import com.mengqid.entity.common.PageRequestVo;
 import com.mengqid.entity.common.PageResult;
 import com.mengqid.entity.common.Response;
+import com.mengqid.entity.video.Video;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,38 +13,40 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
-@RequestMapping("/manage/banner")
-public class BannerController {
+@RequestMapping("/manage/video")
+public class VideoController {
 
     @Autowired
-    private BannerService bannerService;
+    private VideoService videoService;
 
     @RequestMapping("/view")
-    public String view(){
-        return "lyear_home_banner";
+    public String view() {
+        return "lyear_home_video";
     }
 
     /**
      * 列表
+     *
      * @param pageRequestVo
      * @return
      */
     @ResponseBody
-    @RequestMapping("/bannerList")
-    public PageResult bannerList(PageRequestVo pageRequestVo){
-        PageResult pageReuslt = bannerService.bannerList(pageRequestVo);
+    @RequestMapping("/videoList")
+    public PageResult videoList(PageRequestVo pageRequestVo) {
+        PageResult pageReuslt = videoService.videoList(pageRequestVo);
         return pageReuslt;
     }
 
     /**
      * 新增、编辑
+     *
      * @param
      * @return
      */
     @ResponseBody
-    @RequestMapping("/saveBanner")
-    public Response saveBanner(Banner banner){
-        return bannerService.saveBanner(banner);
+    @RequestMapping("/saveVideo")
+    public Response saveVideo(Video video) {
+        return videoService.saveVideo(video);
     }
 
     /**
@@ -53,16 +55,16 @@ public class BannerController {
     @ResponseBody
     @RequestMapping("/updateStatusByids")
     public Response updateStatusByids(@RequestParam("ids[]") List<Integer> ids, @RequestParam("status") Integer status){
-        return bannerService.updateStatusByids(ids,status);
+        return videoService.updateStatusByids(ids,status);
     }
 
     /**
      * 根据id查询
      */
     @ResponseBody
-    @RequestMapping("/findBannerById")
-    public Response findBannerById(Integer id){
-        return bannerService.findBannerById(id);
+    @RequestMapping("/findVideoById")
+    public Response findVideoById(Integer id) {
+        return videoService.findVideoById(id);
     }
 
 
@@ -70,9 +72,9 @@ public class BannerController {
      * 删除
      */
     @ResponseBody
-    @RequestMapping("/deleteBannerByids")
-    public Response deleteBannerByids(@RequestParam("ids[]") List<Integer> ids){
-        return bannerService.deleteBannerByids(ids);
+    @RequestMapping("/deleteVideoByids")
+    public Response deleteVideoByids(@RequestParam("ids[]") List<Integer> ids) {
+        return videoService.deleteVideoByids(ids);
     }
 
 }

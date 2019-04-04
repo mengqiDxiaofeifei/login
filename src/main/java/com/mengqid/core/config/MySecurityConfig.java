@@ -3,6 +3,7 @@ package com.mengqid.core.config;
 
 import com.mengqid.core.security.CustomPasswordEncoder;
 import com.mengqid.core.security.MyAuthenctiationFailureHandler;
+import com.mengqid.core.security.MyAuthenctiationSuccessHandler;
 import com.mengqid.core.security.MyUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,19 +27,21 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new CustomPasswordEncoder();
     }
+    private MyAuthenctiationSuccessHandler myAuthenctiationSuccessHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //定制请求的授权规则
         http.csrf().disable().authorizeRequests()
                 // 访问：这些路径 无需登录认证权限
-                .antMatchers("/**")
-//                .antMatchers("/login","/itnl/checkCode","/itnl/validateCode","/index")
+                //TODO 开发时打开  ，免登陆  /**  允许任意路径访问
+//                .antMatchers("/**")
+                .antMatchers("/login","/itnl/checkCode","/itnl/validateCode","/index")
                 .permitAll().anyRequest().authenticated().and()
                 //开启登录功能
                 .formLogin()
                 .usernameParameter("username")
-                .passwordParameter("password").loginPage("/login").defaultSuccessUrl("/home_static")
+                .passwordParameter("password").loginPage("/login").defaultSuccessUrl("/home")
                 .failureHandler(myAuthenctiationFailureHandler);
 
         //注销
