@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.List;
+
 public interface UserMapper extends MyMapper<User> {
 
     @Select("SELECT `id`, `user_uuid`, type,`username`, `password`, `email`, `telephone`, `role`, `image`, `last_ip`, `last_time` from `tb_user`  where username = #{username} and status  = 1")
@@ -16,4 +18,5 @@ public interface UserMapper extends MyMapper<User> {
     void updateStatusById(@Param("id") Integer id, @Param("status") Integer status);
 
 
+    List<User> accountPage(User user);
 }

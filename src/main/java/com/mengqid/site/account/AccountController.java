@@ -35,8 +35,8 @@ public class AccountController {
      */
     @ResponseBody
     @RequestMapping("/accountList")
-    public PageResult accountList(PageRequestVo pageRequestVo){
-        PageResult pageReuslt = accountService.accountList(pageRequestVo);
+    public PageResult accountList(PageRequestVo pageRequestVo,User user){
+        PageResult pageReuslt = accountService.accountList(pageRequestVo,user);
         return pageReuslt;
     }
 

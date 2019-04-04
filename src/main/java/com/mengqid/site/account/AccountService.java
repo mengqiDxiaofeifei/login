@@ -24,9 +24,9 @@ public class AccountService {
     @Resource
     private UserMapper userMapper;
 
-    public PageResult accountList(PageRequestVo pageRequestVo) {
+    public PageResult accountList(PageRequestVo pageRequestVo,User user) {
         Page<?> page = PageHelper.startPage(pageRequestVo.getPage(), pageRequestVo.getLimit());
-        List<User> users = userMapper.selectAll();
+        List<User> users = userMapper.accountPage(user);
         return CommonUtil.backPageResult(users, page);
     }
 

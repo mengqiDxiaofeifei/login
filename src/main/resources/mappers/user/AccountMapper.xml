@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mengqid.mappers.UserMapper">
+    <select id="accountPage" resultType="com.mengqid.entity.login.User">
+        select
+        `id`,
+        `user_uuid`,
+        `type`,
+        `username`,
+        `password`,
+        `email`,
+        `telephone`,
+        `role`,
+        `image`,
+        `last_ip`,
+        `status`,
+        `last_time`,
+        `create_time`,
+        `update_time`
+        from `tb_user`
+        <where>
+            <if test="username != null and username !=''">username LIKE "%"#{username}"%"</if>
+            <if test="status != null and status !=''">and status = #{status}</if>
+            <if test="telephone != null and telephone !=''">and telephone = #{telephone}</if>
+            <if test="email != null and email !=''">and email = #{email}</if>
+        </where>
+        ORDER BY create_time desc
+    </select>
+</mapper>
