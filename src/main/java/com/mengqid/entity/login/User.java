@@ -17,6 +17,7 @@ public class User implements UserDetails {
     @Id
     private Integer id;
     private String user_uuid;   //用户UUID
+    private Integer type;       //账号类型  1： 门户  0 ： 后台
     private String username;    //用户名
     private String password;    //用户密码
     private String email;       //用户邮箱
@@ -25,7 +26,7 @@ public class User implements UserDetails {
     private Integer status;     //用户状态  1： 启用  0 ：禁用
     private String image;       //用户头像
     private String last_ip;     //上次登录IP
-    private String last_time;   //上次登录时间
+    private Date last_time;   //上次登录时间
     private Date  createTime;   //创建时间
     private Date updateTime;    //更新时间
 

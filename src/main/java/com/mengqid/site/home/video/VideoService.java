@@ -9,6 +9,7 @@ import com.mengqid.entity.video.Video;
 import com.mengqid.mappers.VideoMapper;
 import com.mengqid.utils.CheckUtil;
 import com.mengqid.utils.CommonUtil;
+import com.mengqid.utils.ShortUUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,7 @@ public class VideoService {
             } else {
                 //新增
                 video.setStatus(1);
+                video.setUuid(ShortUUID.generate());
                 video.setCreateTime(new Date());
                 video.setUpdateTime(new Date());
                 videoMapper.insert(video);

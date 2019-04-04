@@ -22,12 +22,13 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     MyUserDetailService myUserDetailsService;
     @Autowired
     public MyAuthenctiationFailureHandler myAuthenctiationFailureHandler;
+    @Autowired
+    public MyAuthenctiationSuccessHandler myAuthenctiationSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new CustomPasswordEncoder();
     }
-    private MyAuthenctiationSuccessHandler myAuthenctiationSuccessHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -41,7 +42,8 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 //开启登录功能
                 .formLogin()
                 .usernameParameter("username")
-                .passwordParameter("password").loginPage("/login").defaultSuccessUrl("/home")
+                .passwordParameter("password").loginPage("/login").defaultSuccessUrl("/home_resouce")
+                .successHandler(myAuthenctiationSuccessHandler)
                 .failureHandler(myAuthenctiationFailureHandler);
 
         //注销
@@ -63,6 +65,6 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         //解决静态资源被拦截的问题
-        web.ignoring().antMatchers( "/js/**","/images/**","/css/**","/fonts/**","/favicon.ico","/pulgins/**","/home_static/**");
+        web.ignoring().antMatchers( "/js/**","/images/**","/css/**","/fonts/**","/favicon.ico","/pulgins/**","/home_static/**","/home_resouce/**");
     }
 }

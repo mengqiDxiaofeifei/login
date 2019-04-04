@@ -1,6 +1,10 @@
 package com.mengqid.core.interceptor;
 
+import com.mengqid.core.base.UserSessionHolder;
+import com.mengqid.entity.login.User;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -24,8 +28,16 @@ public class AccountSessionInterceptor extends HandlerInterceptorAdapter {
                              Object handler) {
         //TODO  全局账号对象  accountSeesionHolder
         //TODO  拦截请求 记录操作日志
-
-
+        /** 保存用户信息到AccountSessionHolder */
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = null;
+        if (authentication != null) {
+            if (authentication.getPrincipal() instanceof User) {
+                user = (User) authentication.getPrincipal();
+                user.setPassword(null);
+                UserSessionHolder.put(user);
+            }
+        }
         return true;
     }
 
