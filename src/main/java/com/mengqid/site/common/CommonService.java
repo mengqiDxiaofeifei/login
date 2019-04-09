@@ -1,14 +1,29 @@
 package com.mengqid.site.common;
 
+import com.mengqid.entity.climb.DouyiVideo;
+import com.mengqid.entity.climb.Temp;
+import com.mengqid.entity.common.Response;
 import com.mengqid.entity.common.UploadResponse;
+import com.mengqid.mappers.DouyiVideoMapper;
+import com.mengqid.utils.CheckUtil;
+import com.mengqid.utils.ClimbDataUtil;
+import com.mengqid.utils.ShortUUID;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class CommonService {
+
+
+    @Autowired
+    private DouyiVideoMapper douyiVideoMapper;
 
 
 //    public UploadResponse uploadImg(MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
@@ -63,4 +78,35 @@ public class CommonService {
         return null;
     }
 
+    public Response climbVideoUrl(String e,String r,String cursor) {
+        if( "".equals(cursor)){
+            return new Response(400, null, "请求参数有误！");
+        }
+        com.mengqid.entity.climb.Response response = ClimbDataUtil.climbVideo(e, r, cursor);
+        String nextCursor = response.getCursor();
+        List<Temp> temps = response.getData();
+        if(!CheckUtil.isEmpty(temps) && temps.size() > 0){
+            temps.forEach(t -> {
+                DouyiVideo douyi= new DouyiVideo();
+                douyi.setCreateTime(new Date());
+                douyi.setId(null);
+                douyi.setUpdateTime(new Date());
+//                douyi.setDesc(t.getDesc());
+                douyi.setUuid(ShortUUID.generate());
+              //  douyi.setDesc(t.get).toString());
+                douyi.setVideoUrl(t.getVideo().getDownloadAddr().getUri());
+                douyiVideoMapper.insert(douyi);
+            });
+            try{
+               //douyiVideoMapper.insertList(list);
+                return new Response(200, nextCursor, "成功");
+            }catch (Exception ex){
+                ex.printStackTrace();
+                return new Response(500, null, "入库失败！");
+            }
+
+        }else {
+            return new Response(500, null, "接口返回数据有误！");
+        }
+    }
 }

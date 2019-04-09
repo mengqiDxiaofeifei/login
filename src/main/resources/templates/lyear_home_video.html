@@ -212,6 +212,9 @@
                                 <div class="toolbar-btn-action">
                                     <a class="btn btn-primary m-r-5" onclick="addBanner()"><i class="mdi mdi-plus"
                                     ></i> 新增</a>
+
+                                    <a class="btn btn-primary m-r-5" onclick="climbVideo()"><i class="mdi mdi-plus"
+                                    ></i>同步数据</a>
                                 </div>
                             </div>
                             <table class="layui-hide" id="demo" lay-filter="test"></table>
@@ -344,6 +347,7 @@
 <script type="text/javascript" src="/pulgins.layui/layui.js"></script>
 <script type="text/javascript" src="/js/datatables.js"></script>
 <script type="text/javascript" src="/js/date.format.js"></script>
+<script type="text/javascript" src="/js/1.js"></script>
 <script type="text/javascript" th:inline="none">
     var table;
     var layer;
@@ -611,6 +615,8 @@
         });
 
 
+
+
         //分页
         laypage.render({
             elem: 'pageDemo' //分页容器的id
@@ -624,7 +630,50 @@
             }
         });
     });
+    var cursor = "";
 
+     function climbVideo(){
+         cursor = localStorage.getItem("CacheCursor");
+         if(cursor == "" || cursor == undefined){
+             cursor = "6675572768232246541";
+         }
+         var path = "dbTest?cursor=" + cursor + "&count=6"
+         var r = generateRandom().toString()
+         var parseTempStr = path + '@&^***' + r
+         var e = generateStr(parseTempStr)
+        $.ajax({
+            url: "/common/climbVideoUrl",
+            type: "get",
+            dataType: "json",
+            data:{
+                'e': e,
+                'r': r,
+                'cursor': cursor
+            },
+            success: function (result) {
+                if(result.code == 200){
+                    layer.msg(result.msg);
+                    localStorage.setItem("CacheCursor",result.data);
+                }else{
+                    layer.msg(result.msg);
+                }
+            },error:function (result) {
+                layer.msg(result.msg);
+            }
+        });
+    }
+
+
+
+    function generateStr(str) {
+        var hash = md5(str);
+        return hash
+    }
+
+    function generateRandom() {
+        c = Math.random().toString(10).substring(2)
+        return c
+    }
 
     function addBanner() {
         $("#starModal").modal();

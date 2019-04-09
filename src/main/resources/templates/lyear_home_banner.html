@@ -323,7 +323,10 @@
         //拖拽上传
         upload.render({
             elem: '#test10'
-            , url: 'http://hd215.api.yesapi.cn//?s=App.CDN.UploadImg'
+            , url: 'http://hd215.api.yesapi.cn//?s=App.CDN.UploadImg',
+            header:{
+                "Access-Control-Allow-Origin" : "*"
+            }
             , data: {
                 'app_key': 'C5BFFAE19E27769EA5A50CBDAE7BAD24',
             }  //额外参数
