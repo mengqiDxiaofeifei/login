@@ -1519,10 +1519,6 @@
                 <div class="cleafix"></div>
             </div>
         </div>
-        <video style="width: 500px;height: 600px" src="https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0300fc40000bikm49g45gtvatl3hnu0" controls="controls">
-
-        </video>
-
         <!--//top-movies-->
     </div>
 </div>
@@ -1792,7 +1788,7 @@
             items: 5,
             itemsDesktop: [640, 4],
             itemsDesktopSmall: [414, 3],
-            jsonPath: "/qiantai/findVideoListNews",  //最新电影
+            jsonPath: "/qiantai/findVideoListdouyi",  //最新电影
             jsonSuccess: showVideoHtml
 
         });
@@ -1867,7 +1863,7 @@
 
             $("#owl-demo").append("<div class='item'>" +
                 "<div class=\"w3l-movie-gride-agile w3l-movie-gride-slider \">" +
-                "<a href=\"single.html\" class=\"hvr-sweep-to-bottom\"><img src='" + item.bgImgUrl + "' title=\"Movies Pro\" class=\"img-responsive\" alt=\" \"/>" +
+                "<a href=\"single.html\" class=\"hvr-sweep-to-bottom\"><video src='http://localhost:8888/" + item.videoUrl + "' title=\"Movies Pro\" class=\"img-responsive\" controls='controls' alt=\" \"/>" +
                 "<div class=\"w3l-action-icon\"><i class=\"fa fa-play-circle-o\" aria-hidden=\"true\"></i></div>" +
                 "</a>" +
                 "<div class=\"mid-1 agileits_w3layouts_mid_1_home\">" +

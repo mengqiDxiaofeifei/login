@@ -1,11 +1,13 @@
 package com.mengqid.core.security;
 
+import com.mengqid.core.base.UserSessionHolder;
 import com.mengqid.entity.login.User;
 import com.mengqid.mappers.UserMapper;
 import com.mengqid.utils.CheckUtil;
 import com.mengqid.utils.NetworkUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -24,8 +26,8 @@ public class MyAuthenctiationSuccessHandler implements AuthenticationSuccessHand
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        System.out.println("登陆成功-----------》" + request.getParameter("s"));
         User user = null;
+        System.out.println("登陆成功-----------》" + request.getParameter("s"));
         if (authentication != null) {
             if (authentication.getPrincipal() instanceof User) {
                 user = (User) authentication.getPrincipal();
@@ -35,6 +37,16 @@ public class MyAuthenctiationSuccessHandler implements AuthenticationSuccessHand
         user.setLast_ip(NetworkUtil.getIpAddress(request));
         user.setLast_time(new Date());
         userMapper.updateByPrimaryKeySelective(user);
+
+
+        /** 保存用户信息到AccountSessionHolder */
+        if (authentication != null) {
+            if (authentication.getPrincipal() instanceof User) {
+                user = (User) authentication.getPrincipal();
+                user.setPassword(null);
+                UserSessionHolder.put(user);
+            }
+        }
         if (!CheckUtil.isEmpty(user)) {
             if (null != user && 0 == user.getType()) {
                 response.sendRedirect("/home");

@@ -48,7 +48,6 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 
         //注销
         http.logout();
-
         //记住登录
        http.rememberMe();
     }
@@ -62,8 +61,6 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-
-
         //解决静态资源被拦截的问题
         web.ignoring().antMatchers( "/js/**","/images/**","/css/**","/fonts/**","/favicon.ico","/pulgins.layui/**","/home_static/**","/home_resouce/**");
     }

@@ -5,6 +5,7 @@ import com.mengqid.entity.climb.Response;
 
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.*;
@@ -18,33 +19,67 @@ import java.util.*;
 public class ClimbDataUtil {
 
 
-
-
-    public static void main(String[] args) throws UnsupportedEncodingException {
-        String baseurl = "https://kuaiyinshi.com/api/kuai-shou/recommend/";
-        //climbVideo();
+    public static void main(String[] args){
+        uploadVideo("https://aweme.snssdk.com/aweme/v1/playwm/","v0200f6c0000biithr4eae1b47hh88sg","classpath:video/");
     }
 
+    public static boolean httpDownload(String httpUrl, String saveFile) {
+        // 1.下载网络文件
+        int byteRead;
+        URL url;
+        try {
+            url = new URL(httpUrl);
+        } catch (MalformedURLException e1) {
+            e1.printStackTrace();
+            return false;
+        }
 
+        try {
+            //2.获取链接
+            URLConnection conn = url.openConnection();
+            //3.输入流
+            InputStream inStream = conn.getInputStream();
+            //3.写入文件
+            FileOutputStream fs = new FileOutputStream(saveFile);
 
-
+            byte[] buffer = new byte[1024];
+            while ((byteRead = inStream.read(buffer)) != -1) {
+                fs.write(buffer, 0, byteRead);
+            }
+            inStream.close();
+            fs.close();
+            return true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 
     /**
-     * 获取视频
+     * 下载视频
      */
-    public static  Response climbVideo(String e,String r,String cursor){
-        String baseurl = " https://mini2.fccabc.com/dbTest";
-        String s = sendGet(baseurl,"cursor="+cursor+"&count=6&e="+e+"&r="+r);
-        return JSONObject.parseObject(s.substring(2, s.length()), Response.class);
+    public static String uploadVideo(String url, String videoId,String targetPath) {
+        Map<String, List<String>> map = sendGetReturnResponse(url, "video_id=" + videoId);
+        List<String> location = map.get("Location");
+        System.out.println("视频地址获取中........." + location.get(0));
+        String videoUrl = "video/"+ videoId + ".mp4";
+        httpDownload(location.get(0),  targetPath+videoId+".mp4");
+        return videoUrl;
     }
 
 
-
-
-
-
-
+    /**
+     * 获取视频videoid
+     */
+    public static Response climbVideo(String e, String r, String cursor) {
+        String baseurl = " https://mini2.fccabc.com/dbTest";
+        String s = sendGet(baseurl, "cursor=" + cursor + "&count=6&e=" + e + "&r=" + r);
+        return JSONObject.parseObject(s.substring(2, s.length()), Response.class);
+    }
 
 
     public static String getHtmlData(String baseUrl) {
@@ -177,5 +212,41 @@ public class ClimbDataUtil {
         return result;
     }
 
-
+    public static Map<String, List<String>> sendGetReturnResponse(String url, String param) {
+        Map<String, List<String>> map = null;
+        BufferedReader in = null;
+        try {
+            String urlName = url + "?" + param;
+            URL realUrl = new URL(urlName);
+            // 打开和URL之间的连接
+            URLConnection conn = realUrl.openConnection();
+            // 设置通用的请求属性
+            conn.setRequestProperty("accept", "*/*");
+            conn.setRequestProperty("connection", "Keep-Alive");
+            conn.setRequestProperty("user-agent",
+                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
+            // 建立实际的连接
+            conn.connect();
+            // 获取所有响应头字段
+            map = conn.getHeaderFields();
+            // 遍历所有的响应头字段
+            for (String key : map.keySet()) {
+                System.out.println(key + "--->" + map.get(key));
+            }
+        } catch (Exception e) {
+            System.out.println("发送GET请求出现异常！" + e);
+            e.printStackTrace();
+        }
+        // 使用finally块来关闭输入流
+        finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return map;
+    }
 }

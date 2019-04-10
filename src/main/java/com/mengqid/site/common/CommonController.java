@@ -25,9 +25,28 @@ public class CommonController {
         return commonService.uploadImg(file,request,response);
     }
 
-
+    /**
+     * 获取视频地址
+     * @param e
+     * @param r
+     * @param cursor
+     * @return
+     */
     @GetMapping("/climbVideoUrl")
     public Response climbVideoUrl(String e,String r,String cursor){
         return commonService.climbVideoUrl(e,r,cursor);
+    }
+
+
+    /**
+     * 获取视频地址（去水印）
+     * @param e
+     * @param r
+     * @param
+     * @return
+     */
+    @GetMapping("/climbVideo")
+    public Response climbVideo(String e,String r,String s){
+        return commonService.climbVideoUrl(e,r,s);
     }
 }

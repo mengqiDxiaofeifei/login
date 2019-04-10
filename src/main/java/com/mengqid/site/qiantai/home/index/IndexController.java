@@ -11,6 +11,7 @@ import com.mengqid.mappers.DouyiVideoMapper;
 import com.mengqid.mappers.TagMapper;
 import com.mengqid.mappers.VideoMapper;
 import com.mengqid.utils.CheckUtil;
+import com.mengqid.utils.ClimbDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,6 +70,20 @@ public class IndexController {
         List<Video> videos = videoMapper.findVideoListNews();
         return new Response(200, videos, "成功");
     }
+
+    /**
+     * 查询最新video
+     */
+    @ResponseBody
+    @RequestMapping("/qiantai/findVideoListdouyi")
+    public Response findVideoListdouyi() {
+        List<DouyiVideo> videoUrl = douyiVideoMapper.findVideoUrl();
+        videoUrl.forEach(s -> {
+            s.setVideoUrl(ClimbDataUtil.uploadVideo("https://aweme.snssdk.com/aweme/v1/playwm/",s.getVideoUrl(),"D:\\gitworkspace\\marketing\\zhou_search\\src\\main\\resources\\static\\video\\"));
+        });
+        return new Response(200, videoUrl, "成功");
+    }
+
 
     /**
      * 查询热门video
