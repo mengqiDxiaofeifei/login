@@ -59,6 +59,33 @@ public class ClimbDataUtil {
     }
 
 
+    public static InputStream httpDownloadInputStream(String httpUrl) {
+        // 1.下载网络文件
+        int byteRead;
+        URL url;
+        try {
+            url = new URL(httpUrl);
+        } catch (MalformedURLException e1) {
+            e1.printStackTrace();
+           return null;
+        }
+
+        try {
+            //2.获取链接
+            URLConnection conn = url.openConnection();
+            //3.输入流
+            InputStream inStream = conn.getInputStream();
+            return    inStream;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
     /**
      * 下载视频
      */

@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 
 @RequestMapping("/common")
@@ -21,32 +22,49 @@ public class CommonController {
     @PostMapping("/upload")
     public UploadResponse uploadImg(
             @RequestParam(value = "file", required = false) MultipartFile file,
-            HttpServletRequest request, HttpServletResponse response) {
-        return commonService.uploadImg(file,request,response);
+            HttpServletRequest request, HttpServletResponse response) throws IOException {
+        return commonService.uploadImg(file, request, response);
     }
+
+
+    @PostMapping("/uploadVideo")
+    public String uploadVideo(
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            HttpServletRequest request, HttpServletResponse response) throws IOException {
+        return commonService.uploadVideo(file);
+    }
+
+    @GetMapping("/delFile")
+    public String delVideo(String path) {
+        commonService.delFile(path);
+        return "success";
+    }
+
 
     /**
      * 获取视频地址
+     *
      * @param e
      * @param r
      * @param cursor
      * @return
      */
     @GetMapping("/climbVideoUrl")
-    public Response climbVideoUrl(String e,String r,String cursor){
-        return commonService.climbVideoUrl(e,r,cursor);
+    public Response climbVideoUrl(String e, String r, String cursor) {
+        return commonService.climbVideoUrl(e, r, cursor);
     }
 
 
     /**
      * 获取视频地址（去水印）
+     *
      * @param e
      * @param r
      * @param
      * @return
      */
     @GetMapping("/climbVideo")
-    public Response climbVideo(String e,String r,String s){
-        return commonService.climbVideoUrl(e,r,s);
+    public Response climbVideo(String e, String r, String s) {
+        return commonService.climbVideoUrl(e, r, s);
     }
 }

@@ -323,23 +323,18 @@
         //拖拽上传
         upload.render({
             elem: '#test10'
-            , url: 'http://hd215.api.yesapi.cn//?s=App.CDN.UploadImg',
-            header:{
-                "Access-Control-Allow-Origin" : "*"
-            }
-            , data: {
-                'app_key': 'C5BFFAE19E27769EA5A50CBDAE7BAD24',
-            }  //额外参数
+            , url: '/common/upload'
+            // , data: {}  //额外参数
             , done: function (res) {
                 console.log(res);
-                if (res.data.err_code == 0) {
-                    $("#test10").css('display', 'none');
-                    $("#imgId").css('display', 'block');
-                    $("#imgId").attr('src', res.data.url);
-                    layer.msg("图片上传成功！");
-                } else {
-                    layer.msg("图片上传失败！");
-                }
+                // if (res.data.err_code == 0) {
+                //     $("#test10").css('display', 'none');
+                //     $("#imgId").css('display', 'block');
+                //     $("#imgId").attr('src', res.data.url);
+                //     layer.msg("图片上传成功！");
+                // } else {
+                //     layer.msg("图片上传失败！");
+                // }
             }
         });
 
