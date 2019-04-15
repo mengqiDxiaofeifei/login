@@ -20,7 +20,11 @@ public class ClimbDataUtil {
 
 
     public static void main(String[] args){
-        uploadVideo("https://aweme.snssdk.com/aweme/v1/playwm/","v0200f6c0000biithr4eae1b47hh88sg","classpath:video/");
+       // uploadVideo("https://aweme.snssdk.com/aweme/v1/playwm/","v0200f6c0000biithr4eae1b47hh88sg","classpath:video/");
+
+
+        Response response = climbVideo("93bf43dfde6ce6c4584a28db32599e9e","626075927881885","6677143367618481422");
+        System.out.println("response = " + response);
     }
 
     public static boolean httpDownload(String httpUrl, String saveFile) {
@@ -107,6 +111,8 @@ public class ClimbDataUtil {
         String s = sendGet(baseurl, "cursor=" + cursor + "&count=6&e=" + e + "&r=" + r);
         return JSONObject.parseObject(s.substring(2, s.length()), Response.class);
     }
+
+
 
 
     public static String getHtmlData(String baseUrl) {

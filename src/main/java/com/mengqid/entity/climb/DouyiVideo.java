@@ -15,7 +15,7 @@ public class DouyiVideo {
 
     private String uuid;
 
-//    private String desc;
+    private String desc;
 
     private String videoUrl;
 

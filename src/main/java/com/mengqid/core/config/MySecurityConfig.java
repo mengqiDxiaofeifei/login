@@ -36,8 +36,8 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().authorizeRequests()
                 // 访问：这些路径 无需登录认证权限
                 //TODO 开发时打开  ，免登陆  /**  允许任意路径访问
-               .antMatchers("/**")
-              //  .antMatchers("/login","/itnl/checkCode","/itnl/validateCode","/index","/qiantai/**")
+              // .antMatchers("/**")
+               .antMatchers("/login","/itnl/checkCode","/itnl/validateCode","/index","/qiantai/**")
                 .permitAll().anyRequest().authenticated().and()
                 //开启登录功能
                 .formLogin()

@@ -8,6 +8,9 @@ import java.util.List;
 
 public interface DouyiVideoMapper extends MyMapper<DouyiVideo>{
 
-    @Select("select * from tb_douyi_video limit 12,6")
+    @Select("select * from tb_douyi_video")
     List<DouyiVideo> findVideoUrl();
+
+
+    void insertDouyi(DouyiVideo douyi);
 }

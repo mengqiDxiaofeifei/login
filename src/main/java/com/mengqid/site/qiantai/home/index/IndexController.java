@@ -1,5 +1,7 @@
 package com.mengqid.site.qiantai.home.index;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.mengqid.entity.category.Category;
 import com.mengqid.entity.climb.DouyiVideo;
 import com.mengqid.entity.common.Response;
@@ -12,9 +14,11 @@ import com.mengqid.mappers.TagMapper;
 import com.mengqid.mappers.VideoMapper;
 import com.mengqid.utils.CheckUtil;
 import com.mengqid.utils.ClimbDataUtil;
+import com.mengqid.utils.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -76,11 +80,9 @@ public class IndexController {
      */
     @ResponseBody
     @RequestMapping("/qiantai/findVideoListdouyi")
-    public Response findVideoListdouyi() {
+    public Response findVideoListdouyi(@RequestParam("page") Integer currentPage) {
+        Page<?> page = PageHelper.startPage(currentPage,6);
         List<DouyiVideo> videoUrl = douyiVideoMapper.findVideoUrl();
-        videoUrl.forEach(s -> {
-            s.setVideoUrl(ClimbDataUtil.uploadVideo("https://aweme.snssdk.com/aweme/v1/playwm/",s.getVideoUrl(),"D:\\gitworkspace\\marketing\\zhou_search\\src\\main\\resources\\static\\video\\"));
-        });
         return new Response(200, videoUrl, "成功");
     }
 
