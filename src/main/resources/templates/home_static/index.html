@@ -1,18 +1,61 @@
 <html>
 <head>
+    <style>
+         body{
+             background: linear-gradient(to right, #1D1A1C, #50093C, #4F02A1);
+         }
+        .video-content{
+            width: 600px;
+            text-align: center;
+            left: auto;
+            height: 400px;
+        }
+        #myvideo{
+            background: black;
+            text-align: center;
+            margin-left: 333px;
+        }
+        #desc{
+            color: white;
+            margin-left: 333px;
+        }
+        .img-content{
+            width: 100px;
+           height: 100px;
+            float: left;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+        .text-content{
+            color: white;
+            left: -23px;
+            float: left;
+            font-size: 30;
+            margin-top: 40px;
+        }
+        .btn-content{
+            position: absolute;
+            margin-top: 116px;
+        }
+    </style>
 </head>
 
 <body>
-<div style="margin-top: 50px;text-align: center">
+<div class="video-content">
+    <img class="img-content" src="../images/1111.png" alt="">
+    <span class="text-content">小音符</span>
     <video  id="myvideo" width="100%" height="100%" controls="controls" >
         你的浏览器不支持HTML5播放此视频
         <span style="white-space:pre">	</span><!-- 支持播放的文件格式 -->
         <source src="" type='video/mp4' />
     </video>
 </div>
-<span id="desc"></span>
-<input type="button" name="" value="上一个" onclick="preVideo()">
-<input type="button" name="" value="下一个" onclick="nextVideo()">
+<div class="btn-content">
+    <span id="desc"></span>
+    <input type="button" name="" value="上一个" onclick="preVideo()">
+    <input type="button" name="" value="下一个" onclick="nextVideo()">
+</div>
+
 <script language="javascript" src="../js/jquery.min.js"></script>
 <script language="javascript">
     var requestCount = 1;
@@ -43,6 +86,8 @@
         video.play();
         curr++;
         if(curr >= vList.length){
+            loadData(requestCount);
+            requestCount++;
             curr = 0; //重新循环播放
         }
     }

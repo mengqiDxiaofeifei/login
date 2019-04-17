@@ -19,12 +19,12 @@ import java.util.*;
 public class ClimbDataUtil {
 
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws Exception {
        // uploadVideo("https://aweme.snssdk.com/aweme/v1/playwm/","v0200f6c0000biithr4eae1b47hh88sg","classpath:video/");
 
-
-        Response response = climbVideo("93bf43dfde6ce6c4584a28db32599e9e","626075927881885","6677143367618481422");
+        Response response = climbVideo("6680119455323852040");
         System.out.println("response = " + response);
+
     }
 
     public static boolean httpDownload(String httpUrl, String saveFile) {
@@ -106,13 +106,21 @@ public class ClimbDataUtil {
     /**
      * 获取视频videoid
      */
-    public static Response climbVideo(String e, String r, String cursor) {
+    public static Response climbVideo(String cursor) throws Exception {
         String baseurl = " https://mini2.fccabc.com/dbTest";
+        String r = CryptUtils.generateRandom();
+        String e = buildParam(cursor,r);
         String s = sendGet(baseurl, "cursor=" + cursor + "&count=6&e=" + e + "&r=" + r);
         return JSONObject.parseObject(s.substring(2, s.length()), Response.class);
     }
 
 
+
+    private static String buildParam(String cursor,String r) throws Exception {
+        String path = "dbTest?cursor=" + cursor + "&count=6";
+        String str = path+"@&^***"+r;
+       return   CryptUtils.getMD5Code(str);
+    }
 
 
     public static String getHtmlData(String baseUrl) {

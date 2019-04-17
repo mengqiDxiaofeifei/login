@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,7 +45,7 @@ public class CommonService {
         String fileExtName = StringUtils.substringAfterLast(file.getOriginalFilename(), ".");
         StorePath storePath = storageClient.uploadImageAndCrtThumbImage(file.getInputStream(), file.getSize(), fileExtName, null);
         String url = storePath.getFullPath();
-        return new UploadResponse(200, new Data(url), "请求参数有误！");
+        return new UploadResponse(200, new Data(url), "上传成功!");
     }
 
     public String uploadVideo(InputStream inputStream, String videoId) {
@@ -60,7 +61,7 @@ public class CommonService {
             storePath = storageClient.uploadFile(file.getInputStream(), file.getSize(), "mp4", null);
             return storePath.getFullPath();
         } catch (Exception e) {
-            log.error("视频上传 e: {}, videoId: {}", e, videoId);
+            log.error("视频上传出错 e: {}, videoId: {}", e, videoId);
             return "";
         }
     }
@@ -90,11 +91,12 @@ public class CommonService {
     }
 
 
-    public Response climbVideoUrl(String e, String r, String cursor){
+    public String climbVideoUrl(String cursor) throws Exception {
         if ("".equals(cursor)) {
-            return new Response(400, null, "请求参数有误！");
+            log.error("climbVideoUrl 获取curosr为空   结束方法  response : {}", cursor);
+            return "";
         }
-        com.mengqid.entity.climb.Response response = ClimbDataUtil.climbVideo(e, r, cursor);
+        com.mengqid.entity.climb.Response response = ClimbDataUtil.climbVideo(cursor);
         String nextCursor = response.getCursor();
         List<Temp> temps = response.getData();
         if (!CheckUtil.isEmpty(temps) && temps.size() > 0) {
@@ -105,20 +107,31 @@ public class CommonService {
                 douyi.setUpdateTime(new Date());
                 douyi.setUuid(ShortUUID.generate());
                 String uri = t.getVideo().getDownloadAddr().getUri();
-                douyi.setVideoUrl(SystemConstant.baseUrl + getVideoUrl(uri));
+                String videoUrl = getVideoUrl(uri);
+                if ("".equals(videoUrl)) {
+                    log.error("视频上传未成功 ----》》》》》》 video: {},time: {}", t, new Date());
+                    return;
+                }
+                douyi.setVideoUrl(SystemConstant.baseUrl + videoUrl);
                 douyi.setDesc(EncodeUtil.removeFourChar(t.getDesc()));
                 douyiVideoMapper.insertDouyi(douyi);
             });
-            try {
-                //douyiVideoMapper.insertList(list);
-                return new Response(200, nextCursor, "成功");
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                return new Response(500, null, "入库失败！");
+            if ("".equals(response.getCursor())) {
+                log.error("climbVideoUrl 获取curosr为空   结束方法  response : {}", response);
+                return "";
             }
-
+            return nextCursor;
         } else {
-            return new Response(500, null, "接口返回数据有误！");
+            return "";
+        }
+    }
+
+    @Scheduled(cron = "0 30 10,14 * * ?")
+    public void scheduled() throws Exception {
+        System.out.println("定时任务开始执行--------------------" + new Date() + "----------------------");
+        String cursor = "";
+        for (int i = 0; i < 2; i++) {
+            cursor = climbVideoUrl(cursor);
         }
     }
 }

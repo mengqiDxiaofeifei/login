@@ -21,7 +21,7 @@ public class CommonController {
 
     @PostMapping("/upload")
     public UploadResponse uploadImg(
-            @RequestParam(value = "file", required = false) MultipartFile file,
+            @RequestParam(value = "file") MultipartFile file,
             HttpServletRequest request, HttpServletResponse response) throws IOException {
         return commonService.uploadImg(file, request, response);
     }
@@ -50,8 +50,8 @@ public class CommonController {
      * @return
      */
     @GetMapping("/climbVideoUrl")
-    public Response climbVideoUrl(String e, String r, String cursor) {
-        return commonService.climbVideoUrl(e, r, cursor);
+    public Response climbVideoUrl(String e, String r, String cursor) throws Exception {
+        return null;
     }
 
 
@@ -65,6 +65,6 @@ public class CommonController {
      */
     @GetMapping("/climbVideo")
     public Response climbVideo(String e, String r, String s) {
-        return commonService.climbVideoUrl(e, r, s);
+        return null;
     }
 }
