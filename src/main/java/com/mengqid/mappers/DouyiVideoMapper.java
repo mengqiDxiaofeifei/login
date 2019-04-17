@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface DouyiVideoMapper extends MyMapper<DouyiVideo>{
 
-    @Select("select * from tb_douyi_video")
+    @Select("SELECT * FROM tb_douyi_video ORDER BY RAND()")
     List<DouyiVideo> findVideoUrl();
 
 

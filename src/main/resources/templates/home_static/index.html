@@ -86,8 +86,8 @@
         video.play();
         curr++;
         if(curr >= vList.length){
-            loadData(requestCount);
             requestCount++;
+            loadData(requestCount);
             curr = 0; //重新循环播放
         }
     }
@@ -112,6 +112,7 @@
         });
     }
 
+    //上一个
     function preVideo() {
         if(curr > 0){
             video.src = vList[curr-1].videoUrl;
@@ -121,7 +122,7 @@
             curr--;
         }
     }
-
+    //下一个
     function nextVideo() {
         if(curr < vList.length-1){
             video.src = vList[curr+1].videoUrl;
