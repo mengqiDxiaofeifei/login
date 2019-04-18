@@ -633,21 +633,11 @@
     var cursor = "";
 
      function climbVideo(){
-         cursor = localStorage.getItem("CacheCursor");
-         if(cursor == "" || cursor == undefined){
-             cursor = "6675572768232246541";
-         }
-         var path = "dbTest?cursor=" + cursor + "&count=6"
-         var r = generateRandom().toString()
-         var parseTempStr = path + '@&^***' + r
-         var e = generateStr(parseTempStr)
         $.ajax({
             url: "/common/climbVideoUrl",
             type: "get",
             dataType: "json",
             data:{
-                'e': e,
-                'r': r,
                 'cursor': cursor
             },
             success: function (result) {

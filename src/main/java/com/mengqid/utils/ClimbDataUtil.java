@@ -22,7 +22,7 @@ public class ClimbDataUtil {
     public static void main(String[] args) throws Exception {
        // uploadVideo("https://aweme.snssdk.com/aweme/v1/playwm/","v0200f6c0000biithr4eae1b47hh88sg","classpath:video/");
 
-        Response response = climbVideo("6680119455323852040");
+        Response response = climbVideo("6680503562964978951");
         System.out.println("response = " + response);
 
     }
@@ -89,18 +89,6 @@ public class ClimbDataUtil {
         }
     }
 
-
-    /**
-     * 下载视频
-     */
-    public static String uploadVideo(String url, String videoId,String targetPath) {
-        Map<String, List<String>> map = sendGetReturnResponse(url, "video_id=" + videoId);
-        List<String> location = map.get("Location");
-        System.out.println("视频地址获取中........." + location.get(0));
-        String videoUrl = "video/"+ videoId + ".mp4";
-        httpDownload(location.get(0),  targetPath+videoId+".mp4");
-        return videoUrl;
-    }
 
 
     /**

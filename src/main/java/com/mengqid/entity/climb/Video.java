@@ -6,4 +6,7 @@ import lombok.Data;
 public class Video {
 
     private DownloadAddr downloadAddr;
+
+    private Cover cover;
+
 }

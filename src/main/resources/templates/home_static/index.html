@@ -37,6 +37,24 @@
             position: absolute;
             margin-top: 116px;
         }
+         input{
+             color: #fff;
+             padding: 3px 20px;
+             font-size: 16px;
+             border-radius: 5px;
+             margin-left: 10px;
+             background-color: #0fc30f;
+             border: none;
+         }
+        .dealtail-content{
+            position: absolute;
+            margin-top: 141px;
+            left: 340px;
+            color: #ae388e;
+        }
+        .table-content{
+            color: white;
+        }
     </style>
 </head>
 
@@ -47,7 +65,7 @@
     <video  id="myvideo" width="100%" height="100%" controls="controls" >
         你的浏览器不支持HTML5播放此视频
         <span style="white-space:pre">	</span><!-- 支持播放的文件格式 -->
-        <source src="" type='video/mp4' />
+        <source src="" type='video/mp4' webkit-playsinline="true" playsinline="true"/>
     </video>
 </div>
 <div class="btn-content">
@@ -55,6 +73,29 @@
     <input type="button" name="" value="上一个" onclick="preVideo()">
     <input type="button" name="" value="下一个" onclick="nextVideo()">
 </div>
+
+<div class="dealtail-content">
+    <img id="headImgUrl" style="height: 50px;width: 50px;" src="">
+    <span id="unqueId"></span>
+    <input type="hidden" id="userId" />
+    <a onclick="ownDeatil()"><span id="nickname"></span></a>
+    <span id="gender"></span>
+   <table class="table-content">
+       <tr>
+           <td>点赞数：</td>
+           <td id="diggCount"></td>
+       </tr>
+       <tr>
+           <td>评论数：</td>
+           <td id="CommentCount"></td>
+       </tr>
+       <tr>
+           <td>分享数：</td>
+           <td id="shareCount"></td>
+       </tr>
+   </table>
+</div>
+
 
 <script language="javascript" src="../js/jquery.min.js"></script>
 <script language="javascript">
@@ -74,16 +115,12 @@
 
     function firstPlay() {
         video.src = vList[curr].videoUrl;
-        $("#desc").text(vList[curr].desc);
-        video.load();
-        video.play();
+        showdetail(vList[curr]);
     }
 
     function play() {
         video.src = vList[curr].videoUrl;
-        $("#desc").text(vList[curr].desc);
-        video.load();
-        video.play();
+        showdetail(vList[curr]);
         curr++;
         if(curr >= vList.length){
             requestCount++;
@@ -116,9 +153,7 @@
     function preVideo() {
         if(curr > 0){
             video.src = vList[curr-1].videoUrl;
-            $("#desc").text(vList[curr-1].desc);
-            video.load();
-            video.play();
+            showdetail(vList[curr-1]);
             curr--;
         }
     }
@@ -126,15 +161,34 @@
     function nextVideo() {
         if(curr < vList.length-1){
             video.src = vList[curr+1].videoUrl;
-            $("#desc").text(vList[curr+1].desc);
-            video.load();
-            video.play();
+            showdetail(vList[curr+1]);
             curr++;
         }else {
             requestCount++;
             loadData(requestCount);
             curr = 0;
         }
+    }
+
+    function showdetail(vList) {
+        $("#desc").text(vList.desc);
+        $("#userId").val(vList.userId);
+        $("#diggCount").text(vList.diggCount);
+        $("#CommentCount").text(vList.CommentCount);
+        $("#shareCount").text(vList.shareCount);
+        var author = vList.author;
+        $("#headImgUrl").attr('src',author.headImgUrl);
+        $("#unqueId").text(author.uniqueId);
+        $("#nickname").text(author.nickname);
+        $("#gender").text(author.gender == 1 ? "男":"女");
+        video.load();
+        video.play();
+    }
+
+
+    function ownDeatil() {
+        var userId = $("#userId").val();
+       window.open("https://www.douyin.com/share/user/"+userId+"?share_type=link")
     }
 </script>
 </body>

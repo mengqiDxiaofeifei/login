@@ -3,11 +3,12 @@ package com.mengqid.site.common;
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.mengqid.constant.SystemConstant;
+import com.mengqid.entity.Author.Author;
 import com.mengqid.entity.climb.DouyiVideo;
 import com.mengqid.entity.climb.Temp;
 import com.mengqid.entity.common.Data;
-import com.mengqid.entity.common.Response;
 import com.mengqid.entity.common.UploadResponse;
+import com.mengqid.mappers.AuthorMapper;
 import com.mengqid.mappers.DouyiVideoMapper;
 import com.mengqid.utils.CheckUtil;
 import com.mengqid.utils.ClimbDataUtil;
@@ -15,6 +16,7 @@ import com.mengqid.utils.EncodeUtil;
 import com.mengqid.utils.ShortUUID;
 import lombok.extern.slf4j.Slf4j;
 import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -40,6 +42,9 @@ public class CommonService {
     @Autowired
     private DouyiVideoMapper douyiVideoMapper;
 
+    @Autowired
+    private AuthorMapper authorMapper;
+
 
     public UploadResponse uploadImg(MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String fileExtName = StringUtils.substringAfterLast(file.getOriginalFilename(), ".");
@@ -55,12 +60,15 @@ public class CommonService {
         } catch (IOException e) {
             log.error("inputstream  转换MultipartFile对象  失败 e: {}, videoId: {}", e, videoId);
         }
+        String uploadUrl = "";
         StorePath storePath = null;
         try {
             System.out.println("inputStream.available() = " + file.getSize());
             storePath = storageClient.uploadFile(file.getInputStream(), file.getSize(), "mp4", null);
-            return storePath.getFullPath();
+            uploadUrl = storePath.getFullPath();
+            return uploadUrl;
         } catch (Exception e) {
+           // delFile(uploadUrl);
             log.error("视频上传出错 e: {}, videoId: {}", e, videoId);
             return "";
         }
@@ -112,9 +120,29 @@ public class CommonService {
                     log.error("视频上传未成功 ----》》》》》》 video: {},time: {}", t, new Date());
                     return;
                 }
+                douyi.setVideoImg(t.getVideo().getCover().getUrlList().get(0));
                 douyi.setVideoUrl(SystemConstant.baseUrl + videoUrl);
+                douyi.setAuthorUid(t.getAuthor().getUid());
+                douyi.setCommentCount(t.getStatistics().getCommentCount());
+                douyi.setDiggCount(t.getStatistics().getDiggCount());
+                douyi.setShareCount(t.getStatistics().getShareCount());
                 douyi.setDesc(EncodeUtil.removeFourChar(t.getDesc()));
+                douyi.setUserId(t.getAuthorUserId());
                 douyiVideoMapper.insertDouyi(douyi);
+                Author author = new Author();
+                try {
+                    author.setGender(t.getAuthor().getGender());
+                    author.setNickname(t.getAuthor().getNickname());
+                    author.setUid(t.getAuthor().getUid());
+                    author.setUniqueId(t.getAuthor().getUniqueId());
+                    if(!"".equals(t.getAuthor().getAvatarThumb().getUrlList().get(0))){
+                        author.setHeadImgUrl(t.getAuthor().getAvatarThumb().getUrlList().get(0));
+                    }
+                    authorMapper.insert(author);
+                } catch (Exception e) {
+                    log.error("获取author  信息为空  Exception : {}", e);
+                }
+
             });
             if ("".equals(response.getCursor())) {
                 log.error("climbVideoUrl 获取curosr为空   结束方法  response : {}", response);
@@ -126,12 +154,5 @@ public class CommonService {
         }
     }
 
-    @Scheduled(cron = "0 30 10,14 * * ?")
-    public void scheduled() throws Exception {
-        System.out.println("定时任务开始执行--------------------" + new Date() + "----------------------");
-        String cursor = "";
-        for (int i = 0; i < 2; i++) {
-            cursor = climbVideoUrl(cursor);
-        }
-    }
+
 }

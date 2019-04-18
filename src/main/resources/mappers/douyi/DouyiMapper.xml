@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mengqid.mappers.DouyiVideoMapper">
+    <insert id="insertDouyi" parameterType="com.mengqid.entity.climb.DouyiVideo">
+			INSERT INTO `tb_douyi_video` (
+				`id`,
+				`uuid`,
+				`desc`,
+				`video_url`,
+				`video_img`,
+				`share_count`,
+				`digg_count`,
+				`comment_count`,
+				`user_id`,
+				`author_uid`,
+				`update_time`,
+				`create_time`
+			)
+			VALUES
+				(
+						NULL,
+							#{uuid},
+							#{desc},
+							#{videoUrl},
+							#{videoImg},
+							#{shareCount},
+							#{diggCount},
+							#{commentCount},
+							#{userId},
+							#{authorUid},
+							NOW(),
+							NOW()
+				);
+   </insert>
+
+
+	<resultMap id="VideoMap" type="com.mengqid.entity.climb.DouyiVideo">
+		<id property="id" column="id"/>
+		<result property="uuid" column="uuid"/>
+		<result property="desc" column="desc"/>
+		<result property="videoUrl" column="video_url"/>
+		<result property="videoImg" column="video_img"/>
+		<result property="shareCount" column="share_count"/>
+		<result property="diggCount" column="digg_count"/>
+		<result property="commentCount" column="comment_count"/>
+		<result property="userId" column="user_id"/>
+		<result property="authorUid" column="author_uid"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+		<association property="author" javaType="com.mengqid.entity.Author.Author">
+			<result property="id" column="id"/>
+			<result property="uniqueId" column="uniqueId"/>
+			<result property="gender" column="gender"/>
+			<result property="nickname" column="nickname"/>
+			<result property="headImgUrl" column="headImgUrl"/>
+		</association>
+	</resultMap>
+	
+	<select id="findVideoUrl" resultMap="VideoMap">
+		SELECT
+			tdv.*,
+			tdva.uid,
+			tdva.unique_id as uniqueId,
+			tdva.nickname as nickname,
+			tdva.gender as gender,
+			tdva.head_img_url as headImgUrl
+		FROM
+			tb_douyi_video  tdv
+		LEFT JOIN tb_douyi_video_author tdva on tdv.user_id = tdva.uid
+		ORDER BY
+			RAND()
+	</select>
+</mapper>

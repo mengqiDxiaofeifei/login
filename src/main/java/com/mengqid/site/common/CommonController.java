@@ -44,14 +44,14 @@ public class CommonController {
     /**
      * 获取视频地址
      *
-     * @param e
-     * @param r
+     * @param
+     * @param
      * @param cursor
      * @return
      */
     @GetMapping("/climbVideoUrl")
-    public Response climbVideoUrl(String e, String r, String cursor) throws Exception {
-        return null;
+    public String climbVideoUrl(String cursor) throws Exception {
+        return commonService.climbVideoUrl(cursor);
     }
 
 

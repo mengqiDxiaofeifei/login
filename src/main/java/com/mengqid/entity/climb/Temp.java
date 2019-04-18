@@ -13,6 +13,10 @@ public class Temp {
     private String descLanguage;
 
     private Video video;
+
+    private String authorUserId;
+
+    private Statistics statistics;
 }
 
 
