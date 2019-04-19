@@ -13,4 +13,7 @@ public interface DouyiVideoMapper extends MyMapper<DouyiVideo>{
 
 
     void insertDouyi(DouyiVideo douyi);
+
+    @Select("SELECT * from tb_douyi_video WHERE DATE_SUB(CURDATE(), INTERVAL 2 DAY) >= date(create_time)")
+    List<DouyiVideo> findYesterDay();
 }
