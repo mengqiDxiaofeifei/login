@@ -22,7 +22,7 @@ public class ClimbDataUtil {
     public static void main(String[] args) throws Exception {
        // uploadVideo("https://aweme.snssdk.com/aweme/v1/playwm/","v0200f6c0000biithr4eae1b47hh88sg","classpath:video/");
 
-        Response response = climbVideo("6680503562964978951");
+        Response response = climbVideo("6678628873883749636");
         System.out.println("response = " + response);
 
     }
@@ -95,7 +95,8 @@ public class ClimbDataUtil {
      * 获取视频videoid
      */
     public static Response climbVideo(String cursor) throws Exception {
-        String baseurl = " https://mini2.fccabc.com/dbTest";
+//        String baseurl = " https://mini2.fccabc.com/dbTest";
+       String baseurl = "https://dy.kukutool.com/dbTest";
         String r = CryptUtils.generateRandom();
         String e = buildParam(cursor,r);
         String s = sendGet(baseurl, "cursor=" + cursor + "&count=6&e=" + e + "&r=" + r);
