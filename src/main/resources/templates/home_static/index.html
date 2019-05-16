@@ -52,6 +52,10 @@
             left: 340px;
             color: #ae388e;
         }
+
+        .td-content{
+            color: #ae388e;
+        }
         .table-content{
             color: white;
         }
@@ -75,11 +79,17 @@
 </div>
 
 <div class="dealtail-content">
-    <img id="headImgUrl" style="height: 50px;width: 50px;" src="">
-    <span id="unqueId"></span>
+    <table class="table-content">
+        <tr>
+            <td><img id="headImgUrl" style="height: 50px;width: 50px;" src=""></td>
+            <td class="td-content">
+                <span id="unqueId"></span><br/>
+                <a onclick="ownDeatil()"><span id="nickname"></span></a><br/>
+                <span id="gender"></span>
+            </td>
+        </tr>
+    </table>
     <input type="hidden" id="userId" />
-    <a onclick="ownDeatil()"><span id="nickname"></span></a>
-    <span id="gender"></span>
    <table class="table-content">
        <tr>
            <td>点赞数：</td>
@@ -171,10 +181,18 @@
     }
 
     function showdetail(vList) {
-        $("#desc").text(vList.desc);
+        var descArr = vList.desc.split("#");
+        console.log(descArr.length);
+        var desc = "";
+        if(descArr.length == 2){
+            desc ="#" + descArr[1]+"" + descArr[0].substring(0,descArr[0].length-1);
+        }else if(descArr.length == 1){
+            desc = descArr[0];
+        }
+        $("#desc").text(desc);
         $("#userId").val(vList.userId);
         $("#diggCount").text(vList.diggCount);
-        $("#CommentCount").text(vList.CommentCount);
+        $("#CommentCount").text(vList.commentCount);
         $("#shareCount").text(vList.shareCount);
         var author = vList.author;
         $("#headImgUrl").attr('src',author.headImgUrl);
