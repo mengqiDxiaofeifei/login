@@ -56,7 +56,7 @@ public class TaskJobTimer {
      * 定时获取抖音视频及详情
      * (从凌晨0~ 5点开始  每分钟执行一次)
      */
-    @Scheduled(cron = "0 0/5 0-5 * * ?")
+    //@Scheduled(cron = "0 0/5 0-5 * * ?")
     public void scheduled2(){
         log.info("现在时间是" + new Date());
         SysParam sysParam = sysParamMapper.selectByKey(SystemConstant.CACHE_CURSOR);
@@ -75,7 +75,7 @@ public class TaskJobTimer {
      * 定时删除抖音视频及详情
      * (每天上午6点执行一次)
      */
-    @Scheduled(cron = "0 0 6 * * ?")
+   // @Scheduled(cron = "0 0 6 * * ?")
     @Transactional(rollbackFor = Exception.class)
     public void scheduled3(){
         log.info("删除视频定时器开始执行-------------现在时间是" + new Date());
@@ -105,5 +105,6 @@ public class TaskJobTimer {
     String s = "http://3.14.4.147/group1/M00/00/02/rB8ni1y4ITqAONRrAD3joUCLYTE489.mp4";
    s =  s.substring(SystemConstant.baseUrl.length(),s.length());
         System.out.println("s = " + s);
+
     }
 }

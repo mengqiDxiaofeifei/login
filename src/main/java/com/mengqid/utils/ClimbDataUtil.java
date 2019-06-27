@@ -22,10 +22,15 @@ public class ClimbDataUtil {
     public static void main(String[] args) throws Exception {
        // uploadVideo("https://aweme.snssdk.com/aweme/v1/playwm/","v0200f6c0000biithr4eae1b47hh88sg","classpath:video/");
 
-        Response response = climbVideo("6678628873883749636");
-        System.out.println("response = " + response);
+//        Response response = climbVideo("6678628873883749636");
+//        System.out.println("response = " + response);
 
-    }
+        String s = sendGet("https://kuaiyinshi.com/api/mei-pai/recommend/", "callback=showData&_="+System.currentTimeMillis());
+        System.out.println("s = " + s);
+ }
+
+
+
 
     public static boolean httpDownload(String httpUrl, String saveFile) {
         // 1.下载网络文件

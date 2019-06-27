@@ -79,4 +79,26 @@ public class AccountController {
         return accountService.deleteUserByids(ids);
     }
 
+    /**
+     * 修改密码
+     */
+    @RequestMapping("/changePwd")
+    public ModelAndView changePwd(){
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("lyear_pages_edit_pwd");
+        return mv;
+    }
+
+
+    /**
+     * 个人信息
+     */
+    @RequestMapping("/ownDeatils")
+    public ModelAndView ownDeatils(){
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("lyear_pages_profile");
+        return mv;
+    }
+
+
 }
