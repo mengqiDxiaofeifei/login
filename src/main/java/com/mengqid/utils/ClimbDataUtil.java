@@ -25,9 +25,15 @@ public class ClimbDataUtil {
 //        Response response = climbVideo("6678628873883749636");
 //        System.out.println("response = " + response);
 
-        String s = sendGet("https://kuaiyinshi.com/api/mei-pai/recommend/", "callback=showData&_="+System.currentTimeMillis());
+//        String s = sendGet("https://kuaiyinshi.com/api/mei-pai/recommend/", "callback=showData&_="+System.currentTimeMillis());
+//        System.out.println("s = " + s);
+
+
+        String s = sendPost("https://api.apishop.net/communication/sms/send",
+                "apiKey=LSsrAGm279f7674a5de69fc3868625aeb3f984ced7ef78a&phoneNum=17320406595&templateID=10346&params=[6666]");
         System.out.println("s = " + s);
- }
+
+    }
 
 
 
