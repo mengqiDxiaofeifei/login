@@ -79,6 +79,9 @@ public class AccountController {
         return accountService.deleteUserByids(ids);
     }
 
+
+
+
     /**
      * 修改密码
      */
@@ -99,6 +102,9 @@ public class AccountController {
         mv.setViewName("lyear_pages_profile");
         return mv;
     }
+
+
+
 
 
 }

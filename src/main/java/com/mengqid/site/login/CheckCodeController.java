@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.mengqid.entity.Response;
 import com.mengqid.entity.common.SmsCode.SmsCode;
 import com.mengqid.mappers.SmsCodeMapper;
+import com.mengqid.site.account.AccountService;
 import com.mengqid.utils.Captcha;
 import com.mengqid.utils.CheckUtil;
 import com.mengqid.utils.SendSmsUtils;
@@ -40,7 +41,8 @@ public class CheckCodeController {
 
     @Resource
     private SmsCodeMapper smsCodeMapper;
-
+    @Resource
+    private AccountService accountService;
 
     /**
      * 用于生成带四位数字验证码的图片
@@ -66,6 +68,27 @@ public class CheckCodeController {
             }
         }
     }
+
+
+    /**
+     * 查询手机号
+     */
+    @ResponseBody
+    @RequestMapping("/findUserByMobile")
+    public com.mengqid.entity.Response findUserByMobile(String mobile){
+        return accountService.findUserByMobile(mobile);
+    }
+
+
+    /**
+     * 查询用户名
+     */
+    @ResponseBody
+    @RequestMapping("/findUserByUsername")
+    public com.mengqid.entity.Response findUserByUsername(String username){
+        return accountService.findUserByUsername(username);
+    }
+
 
     /**
      * 校验二维码

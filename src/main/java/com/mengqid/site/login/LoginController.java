@@ -38,6 +38,13 @@ public class LoginController {
         mv.setViewName("index");
         return mv;
     }
+    @RequestMapping("/register")
+    public ModelAndView register() {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("lyear_pages_register");
+        return mv;
+    }
+
 
     @RequestMapping("/login_m")
     @ResponseBody

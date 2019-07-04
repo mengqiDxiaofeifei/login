@@ -1,0 +1,379 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>注册页面 - 大白羊后台管理系统</title>
+    <link rel="icon" href="./css/favicon.ico" type="image/ico">
+    <meta name="author" content="yinqi">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./pulgins.layui/css/layui.css" rel="stylesheet">
+    <link href="./css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="./css/style.min.css" rel="stylesheet">
+    <style>
+        .lyear-wrapper {
+            position: relative;
+        }
+
+        .lyear-login {
+            display: flex !important;
+            min-height: 100vh;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .login-center {
+            background: #fff;
+            min-width: 38.25rem;
+            padding: 2.14286em 3.57143em;
+            border-radius: 5px;
+            margin: 2.85714em 0;
+        }
+
+        .login-header {
+            margin-bottom: 1.5rem !important;
+        }
+
+        .login-center .has-feedback.feedback-left .form-control {
+            padding-left: 38px;
+            padding-right: 12px;
+        }
+
+        .login-center .has-feedback.feedback-left .form-control-feedback {
+            left: 0;
+            right: auto;
+            width: 38px;
+            height: 38px;
+            line-height: 38px;
+            z-index: 4;
+            color: #dcdcdc;
+        }
+
+        .login-center .has-feedback.feedback-left.row .form-control-feedback {
+            left: 15px;
+        }
+
+        .message {
+            width: 200px;
+            height: 100px;
+            position: relative;
+            opacity: 0.5;
+            background: #6c757d;
+            align-content: center;
+            text-align: center;
+        }
+
+        .mobileDiv {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+<div class="row lyear-wrapper">
+    <div class="lyear-login">
+        <div class="login-center">
+            <div class="login-header text-center">
+                <a href="index.html"> </a>
+            </div>
+            <!--账号密码登录-->
+            <div id="userDiv" class="login_con">
+                <form th:action="@{/login}" method="post" id="from-id">
+                    <input type="hidden" name="type" value="1"/>
+                    <div class="form-group has-feedback feedback-left">
+                        <input type="text" placeholder="请输入您的用户名" class="form-control" name="username" id="username"/>
+                        <span class="mdi mdi-account form-control-feedback" aria-hidden="true"></span>
+                    </div>
+                    <div class="form-group has-feedback feedback-left">
+                        <input type="password" placeholder="请输入密码" class="form-control" id="password" name="password"/>
+                        <span class="mdi mdi-lock form-control-feedback" aria-hidden="true"></span>
+                    </div>
+                    <div class="form-group has-feedback feedback-left">
+                        <input type="text" placeholder="请输入您的手机号" class="form-control" name="mobile" id="phone"/>
+                        <span class="mdi mdi-account form-control-feedback" aria-hidden="true"></span>
+                    </div>
+                    <div class="form-group has-feedback feedback-left row">
+                        <div class="col-xs-7">
+                            <input type="text" id="input2" class="form-control" placeholder="验证码">
+                            <span class="mdi mdi-check-all form-control-feedback" aria-hidden="true"></span>
+                        </div>
+                        <div class="col-xs-5">
+                            <!--<imgs src="/images/captcha.png" class="pull-right" id="captcha" style="cursor: pointer;"-->
+                            <!--onclick="this.src=this.src+'?d='+Math.random();" title="点击刷新" alt="captcha">-->
+                            <img id="imgObj2" class="pull-right" onclick="createCode2()" src="/itnl/validateCode"
+                                 alt="">
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback feedback-left row">
+                        <div class="col-xs-7">
+                            <input type="text" id="code" name="code" class="form-control" placeholder="短信验证码">
+                            <span class="mdi mdi-check-all form-control-feedback" aria-hidden="true"></span>
+                        </div>
+                        <div class="col-xs-5">
+                            <button type="button" class="btn btn-block btn-primary" onclick="sendSmsBtn2(this)">
+                                获取验证码
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="button" class="btn btn-block btn-primary" id="login-btn" onclick="run()"
+                               value="立即登录"/>
+                    </div>
+                    <a href="javascript:void(0)" style="float: right;">已有账号?去登陆</a>
+                </form>
+            </div>
+
+            <hr>
+            <footer class="col-sm-12 text-center">
+                <p class="m-b-0">Copyright © 2019
+                    <a href="http://mengqid.cn/index">官网</a>. All right reserved
+                </p>
+            </footer>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="./plugins/design/layui.js"></script>
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+<script type="text/javascript" src="./pulgins.layui/layui.all.js"></script>
+<script>
+    var countdown = 60;
+    var layer;
+    layui.use(['layer'], function () {
+        layer = layui.layer;
+    });
+
+    //校验验证码
+    function check() {
+        if (document.getElementById("username").value == '') {
+            layer.msg("请输入账号")
+            return false;
+        }
+        if (document.getElementById("password").value == '') {
+            layer.msg("请输入密码")
+            $("[name=password]").val("");
+            return false;
+        }
+        var flag;
+        var inputCode = document.getElementById("input").value.toUpperCase(); //取得输入的验证码并转化为大写
+        if (inputCode.length <= 0) { //若输入的验证码长度为0
+            layer.msg("请输入验证码");
+            return false;
+        }
+        $.ajaxSetup({
+            async: false
+        });
+        $.get("/itnl/checkCode?code=" + inputCode, function (data) {
+            if (data == "success") {
+                flag = true;
+            } else {
+                layer.msg("验证码错误");
+            }
+        });
+        return flag;
+    }
+
+    function checkExistUserName() {
+        var f = false;
+        var username = document.getElementById("username").value;
+        if (username == '') {
+            layer.msg("请输入账号")
+            return false;
+        } else {
+            $.ajaxSetup({
+                async: false
+            });
+            $.get("/itnl/findUserByUsername?username=" + username, function (res) {
+                if (res.data == null) {
+                    f = true;
+                } else {
+                    layer.msg("用户名已存在！");
+                }
+            });
+            return f;
+        }
+    }
+
+    function checkExistPhone() {
+        var f = false;
+        var phone = document.getElementById("phone").value;
+        if (phone == '') {
+            layer.msg("请输入手机号")
+            return false;
+        } else {
+            $.ajaxSetup({
+                async: false
+            });
+            $.get("/itnl/findUserByMobile?mobile=" + phone, function (res) {
+                if (res.data == null) {
+                    f = true;
+                } else {
+                    layer.msg("手机号已存在！");
+                    createCode2();
+                }
+            });
+        }
+        return f;
+    }
+
+
+    function run() {
+        if (check() && checkExistUserName()) {
+            $("#from-id").submit();
+        }
+    }
+
+    // 刷新图片
+    function createCode2() {
+        var imgSrc = $("#imgObj2");
+        var src = imgSrc.attr("src");
+        imgSrc.attr("src", changeUrl(src));
+        document.getElementById("input2").value = "";
+    }
+
+    //为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳
+    function changeUrl(url) {
+        var timestamp = (new Date()).valueOf();
+        return "/itnl/validateCode?timestamp=" + timestamp;
+        //
+        //
+        // if (url.indexOf("?") > -1) {
+        // 	url = url + "&timestamp=" + timestamp
+        // } else {
+        // 	url = url + "?timestamp=" + timestamp
+        // }
+        // // url = url + "?timestamp=" + timestamp;
+        // return url;
+    }
+
+    document.onkeydown = function (event) {
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+        if (e && e.keyCode == 13) { // enter 键
+            if ($("#typeId").val() == 0) {
+                run();
+            } else {
+                run_m();
+            }
+
+        }
+    };
+
+
+    //校验验证码
+    var regex = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+
+    function checkPhone() {
+        if (document.getElementById("phone").value != '') {
+            if (!document.getElementById("phone").value.match(regex)) {
+                layer.msg("请输入正确手机号");
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            layer.msg("请输入手机号");
+            return false;
+        }
+        return flag;
+    }
+
+
+    function checkCode() {
+        var sign = false;
+        var inputCode = document.getElementById("input2").value.toUpperCase(); //取得输入的验证码并转化为大写
+        if (inputCode.length <= 0) { //若输入的验证码长度为0
+            layer.msg("请输入验证码");
+            return false;
+        }
+        $.ajaxSetup({
+            async: false
+        });
+        $.get("/itnl/checkCode?code=" + inputCode, function (data) {
+            if (data == "success") {
+                sign = true;
+            } else {
+                layer.msg("验证码错误");
+            }
+        });
+        return sign;
+    }
+
+
+    function sendSmsBtn2(obj) {
+        if (checkPhone()) {
+            console.log(checkExistPhone() + "0000000000000");
+            if (checkCode() && checkExistPhone()) {
+                obj = $(obj);
+                $.ajax({
+                    url: "/itnl/sendCode",
+                    contentType: "application/json",
+                    type: "get",
+                    dataType: "json",
+                    async: true,
+                    data: {
+                        "mobile": $("#phone").val(),
+                    },
+                    success: function (data, status) {
+                        if (data.code == 200) {
+                            layer.msg("发送成功")
+                        }
+                    }
+                })
+                settime(obj);
+            }
+        }
+    }
+
+
+    //验证码
+    function settime(obj) { //发送验证码倒计时
+        if (countdown == 0) {
+            obj.attr('disabled', false);
+            //obj.removeattr("disabled");
+            obj.text("发送验证码");
+            countdown = 60;
+            return;
+        } else {
+            obj.attr('disabled', true);
+            obj.text("重新发送(" + countdown + ")");
+            countdown--;
+        }
+        setTimeout(function () {
+                settime(obj)
+            }
+            , 1000)
+    }
+
+
+
+
+</script>
+<script th:inline="javascript">
+    var param = [[${param}]];
+    var type;
+    var msg;
+    if (param.error != undefined) {
+        if (param.error.length > 0) {
+            if (param.error[0] == 0) {
+                layer.msg("用户不存在");
+            } else if (param.error[0] == 1) {
+                layer.msg("密码错误");
+            }
+        }
+    }
+    if (param.type != undefined) {
+        if (param.type.length > 0) {
+            type = param.type[0];
+        }
+    }
+    if (param.msg != undefined) {
+        if (param.msg.length > 0) {
+            msg = param.msg[0];
+        }
+    }
+</script>
+</body>
+
+</html>

@@ -13,6 +13,7 @@ import com.mengqid.utils.PasswordEncoderUtil;
 import com.mengqid.utils.ShortUUID;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -80,5 +81,19 @@ public class AccountService {
         } else {
             return new Response(400, null, "请求参数不能为空！");
         }
+    }
+
+    public com.mengqid.entity.Response findUserByMobile(String mobile) {
+        Example example = new Example(User.class);
+        example.createCriteria().andEqualTo("telephone",mobile);
+        User user = userMapper.selectOneByExample(example);
+        return com.mengqid.entity.Response.buildSuccessResponse(user);
+    }
+
+    public com.mengqid.entity.Response findUserByUsername(String username) {
+        Example example = new Example(User.class);
+        example.createCriteria().andEqualTo("username",username);
+        User user = userMapper.selectOneByExample(example);
+        return com.mengqid.entity.Response.buildSuccessResponse(user);
     }
 }
