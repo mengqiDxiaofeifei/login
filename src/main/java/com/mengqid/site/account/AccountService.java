@@ -7,6 +7,7 @@ import com.mengqid.entity.common.PageResult;
 import com.mengqid.entity.common.Response;
 import com.mengqid.entity.login.User;
 import com.mengqid.mappers.UserMapper;
+import com.mengqid.site.login.LoginService;
 import com.mengqid.utils.CheckUtil;
 import com.mengqid.utils.CommonUtil;
 import com.mengqid.utils.PasswordEncoderUtil;
@@ -24,8 +25,10 @@ public class AccountService {
 
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private LoginService loginService;
 
-    public PageResult accountList(PageRequestVo pageRequestVo,User user) {
+    public PageResult accountList(PageRequestVo pageRequestVo, User user) {
         Page<?> page = PageHelper.startPage(pageRequestVo.getPage(), pageRequestVo.getLimit());
         List<User> users = userMapper.accountPage(user);
         return CommonUtil.backPageResult(users, page);
@@ -85,15 +88,23 @@ public class AccountService {
 
     public com.mengqid.entity.Response findUserByMobile(String mobile) {
         Example example = new Example(User.class);
-        example.createCriteria().andEqualTo("telephone",mobile);
+        example.createCriteria().andEqualTo("telephone", mobile);
         User user = userMapper.selectOneByExample(example);
         return com.mengqid.entity.Response.buildSuccessResponse(user);
     }
 
     public com.mengqid.entity.Response findUserByUsername(String username) {
         Example example = new Example(User.class);
-        example.createCriteria().andEqualTo("username",username);
+        example.createCriteria().andEqualTo("username", username);
         User user = userMapper.selectOneByExample(example);
         return com.mengqid.entity.Response.buildSuccessResponse(user);
+    }
+
+    public Boolean checkSmsCode(String phone, String smsCode) {
+        if (CheckUtil.isEmpty(phone) && CheckUtil.isEmpty(smsCode)) {
+            return false;
+        } else {
+            return loginService.checkCode(phone, smsCode);
+        }
     }
 }

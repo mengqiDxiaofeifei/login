@@ -112,7 +112,7 @@
 								<input type="button" class="btn btn-block btn-primary" id="login-btn2" onclick="run_m()" value="立即登录" />
 							</div>
 							<a href="javascript:void(0)" onclick="showUsername()">账号密码登录</a>
-							<a href="javascript:void(0)" style="float: right;">没有账号?马上注册</a>
+							<a href="/register" style="float: right;">没有账号?马上注册</a>
 						</form>
 					</div>
 					<!--账号密码登录-->
@@ -142,7 +142,7 @@
 								<input type="button" class="btn btn-block btn-primary" id="login-btn" onclick="run()" value="立即登录" />
 							</div>
 							<a href="javascript:void(0)" onclick="showMobile()">短信快捷登录</a>
-							<a href="javascript:void(0)" style="float: right;">没有账号?马上注册</a>
+							<a href="/register" style="float: right;">没有账号?马上注册</a>
 						</form>
 					</div>
 
@@ -240,12 +240,12 @@
             document.onkeydown = function (event) {
                 var e = event || window.event || arguments.callee.caller.arguments[0];
                 if (e && e.keyCode == 13) { // enter 键
-                    if ($("#typeId").val() == 0) {
-                        run();
-                    } else {
-                        run_m();
-                    }
-
+                    // if ($("#typeId").val() == 0) {
+                    //     run();
+                    // } else {
+                    //     run_m();
+                    // }
+					run();
                 }
             };
 			//$("#mobileDiv").click(function(e){

@@ -91,6 +91,15 @@ public class CheckCodeController {
 
 
     /**
+     * 校验手机验证码
+     */
+    @ResponseBody
+    @RequestMapping("/checkSmsCode")
+    public Boolean checkSmsCode(String phone,String code){
+        return accountService.checkSmsCode(phone,code);
+    }
+
+    /**
      * 校验二维码
      *
      * @param request
@@ -126,7 +135,7 @@ public class CheckCodeController {
         //获取随机验证码
        String code = getNonceStr();
         //测试专用
-        //String code = "0000";
+        // String code = "0000";
         //发送验证码
         JSONObject returnMsg = SendSmsUtils.sendSms(mobile, code);
 //        if (CheckUtil.isEmpty(returnMsg)) {

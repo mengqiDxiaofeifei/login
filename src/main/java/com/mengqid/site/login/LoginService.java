@@ -1,5 +1,6 @@
 package com.mengqid.site.login;
 
+import com.mengqid.entity.Response;
 import com.mengqid.entity.common.SmsCode.SmsCode;
 import com.mengqid.entity.login.User;
 import com.mengqid.mappers.SmsCodeMapper;
@@ -91,5 +92,23 @@ public class LoginService {
             return true;
         }
         return false;
+    }
+
+
+    public Response registerUser(User user) {
+        if(!CheckUtil.isEmpty(user.getCode()) && !CheckUtil.isEmpty(user.getTelephone())){
+            boolean flag = checkCode(user.getTelephone(), user.getCode());
+            if(!flag){
+                return Response.buildErrorResponse("短信验证码有误或验证码已过期！");
+            }
+        }
+        user.setPassword(PasswordEncoderUtil.passwordEncoder(user.getPassword()));
+        user.setUser_uuid(ShortUUID.generate());
+        user.setStatus(1);
+        user.setType(0);
+        user.setCreateTime(new Date());
+        user.setUpdateTime(new Date());
+        userMapper.insert(user);
+        return Response.buildSuccessResponse();
     }
 }

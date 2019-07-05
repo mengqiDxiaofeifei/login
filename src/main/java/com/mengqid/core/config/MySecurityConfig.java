@@ -41,10 +41,13 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                        "/register",
                        "/login_m",
                        "/itnl/checkCode",
+                       "/itnl/checkSmsCode",
                        "/itnl/validateCode",
                        "/itnl/findUserByUsername",
                        "/itnl/findUserByMobile",
-                       "/itnl/sendCode","/index",
+                       "/itnl/sendCode",
+                       "/registerUser",
+                       "/index",
                        "/qiantai/**","/api/**")
                 .permitAll().anyRequest().authenticated().and()
                 //开启登录功能

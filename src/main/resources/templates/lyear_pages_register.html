@@ -80,18 +80,25 @@
             </div>
             <!--账号密码登录-->
             <div id="userDiv" class="login_con">
-                <form th:action="@{/login}" method="post" id="from-id">
+                <form class="layui-form" method="post" id="from-id">
                     <input type="hidden" name="type" value="1"/>
                     <div class="form-group has-feedback feedback-left">
-                        <input type="text" placeholder="请输入您的用户名" class="form-control" name="username" id="username"/>
+                        <input type="text" placeholder="请输入用户名（用户名为6到12位字母或数字）" lay-verify="username" class="form-control"
+                               name="username" id="username"/>
                         <span class="mdi mdi-account form-control-feedback" aria-hidden="true"></span>
                     </div>
                     <div class="form-group has-feedback feedback-left">
-                        <input type="password" placeholder="请输入密码" class="form-control" id="password" name="password"/>
+                        <input type="password" placeholder="请输入密码（密码必须6到12位）" lay-verify="pass" class="form-control" id="password"
+                               name="password"/>
                         <span class="mdi mdi-lock form-control-feedback" aria-hidden="true"></span>
                     </div>
                     <div class="form-group has-feedback feedback-left">
-                        <input type="text" placeholder="请输入您的手机号" class="form-control" name="mobile" id="phone"/>
+                        <input type="password" placeholder="请输入确认密码（密码必须6到12位）" lay-verify="passcheck" class="form-control" id="checkpassword"
+                              />
+                        <span class="mdi mdi-lock form-control-feedback" aria-hidden="true"></span>
+                    </div>
+                    <div class="form-group has-feedback feedback-left">
+                        <input type="text" placeholder="请输入您的手机号" class="form-control" lay-verify="phone" name="telephone" id="phone"/>
                         <span class="mdi mdi-account form-control-feedback" aria-hidden="true"></span>
                     </div>
                     <div class="form-group has-feedback feedback-left row">
@@ -108,7 +115,7 @@
                     </div>
                     <div class="form-group has-feedback feedback-left row">
                         <div class="col-xs-7">
-                            <input type="text" id="code" name="code" class="form-control" placeholder="短信验证码">
+                            <input type="text" id="code" name="code" lay-verify="smsCode" class="form-control" placeholder="短信验证码">
                             <span class="mdi mdi-check-all form-control-feedback" aria-hidden="true"></span>
                         </div>
                         <div class="col-xs-5">
@@ -118,10 +125,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="button" class="btn btn-block btn-primary" id="login-btn" onclick="run()"
-                               value="立即登录"/>
+                        <input type="button" lay-submit=""  lay-filter="suu" class="btn btn-block btn-primary"
+                               value="立即注册"/>
                     </div>
-                    <a href="javascript:void(0)" style="float: right;">已有账号?去登陆</a>
+                    <a href="/login" style="float: right;">已有账号?去登陆</a>
                 </form>
             </div>
 
@@ -134,11 +141,95 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="./plugins/design/layui.js"></script>
+<script type="text/javascript" src="./pulgins.layui/layui.js"></script>
 <script type="text/javascript" src="./js/jquery.min.js"></script>
 <script type="text/javascript" src="./js/bootstrap.min.js"></script>
-<script type="text/javascript" src="./pulgins.layui/layui.all.js"></script>
 <script>
+    layui.use(['form', 'layedit', 'laydate'], function () {
+        var form = layui.form
+            , layer = layui.layer;
+
+        //自定义验证规则
+        form.verify({
+            username: function (value) {
+                var message = "";
+               if(value.length > 0){
+                   if(!value.match(/^[a-zA-Z0-9_-]{6,12}$/)){
+                       return "用户名必须6到12位";
+                   }else {
+                       $.ajaxSetup({
+                           async: false
+                       });
+                       $.get("/itnl/findUserByUsername?username=" + value, function (res) {
+                           if (res.data != null) {
+                              message = "该用户名已存在！"
+                           }
+                       });
+                      return message;
+                   }
+               }else {
+                   return "用户名不能为空";
+               }
+            }
+            , pass: [
+                /^[\S]{6,12}$/
+                , '密码必须6到12位，且不能出现空格'
+            ],passcheck :function (value) {
+                var val = document.getElementById("password").value;
+                if(val != value){
+                    return "两次密码输入不一致";
+                }
+            }
+            , phone: function (value) {
+                if(value.length < 0){
+                    return "手机号不能为空";
+                }
+            },smsCode :function (value) {
+                var msg;
+                var phone = document.getElementById("phone").value;
+                if (phone == '') {
+                   return "手机号不能为空";
+                }
+                if(value.length > 0){
+                    $.get("/itnl/checkSmsCode?phone=" + phone+"&code="+value, function (res) {
+                        if (!res) {
+                            msg = "短信验证码有误或验证码已过期！"
+                        }
+                    });
+                    return msg;
+                }else {
+                    return "短信验证码不能为空";
+                }
+            }
+        });
+
+        form.on('submit(suu)', function(data){
+            $.ajax({
+                url: "/registerUser",
+                contentType: "application/json",
+                type: "POST",
+                dataType: "json",
+                async: true,
+                data:
+                    JSON.stringify(data.field),
+                success: function (data, status) {
+                    if (data.code == 200) {
+                        layer.confirm("恭喜您，注册成功", {
+                            btn: ['去登陆']
+                        }, function () {
+                            window.location.href = "/login";
+                        });
+                    }else {
+                        layer.msg(data.msg);
+                    }
+                }
+            })
+        });
+
+
+    });
+
+
     var countdown = 60;
     var layer;
     layui.use(['layer'], function () {
@@ -147,6 +238,7 @@
 
     //校验验证码
     function check() {
+        var username = document.getElementById("username").value;
         if (document.getElementById("username").value == '') {
             layer.msg("请输入账号")
             return false;
@@ -157,44 +249,19 @@
             return false;
         }
         var flag;
-        var inputCode = document.getElementById("input").value.toUpperCase(); //取得输入的验证码并转化为大写
-        if (inputCode.length <= 0) { //若输入的验证码长度为0
-            layer.msg("请输入验证码");
-            return false;
-        }
         $.ajaxSetup({
             async: false
         });
-        $.get("/itnl/checkCode?code=" + inputCode, function (data) {
-            if (data == "success") {
+        $.get("/itnl/findUserByUsername?username=" + username, function (res) {
+            if (res.data == null) {
                 flag = true;
             } else {
-                layer.msg("验证码错误");
+                layer.msg("用户名已存在！");
             }
         });
         return flag;
     }
 
-    function checkExistUserName() {
-        var f = false;
-        var username = document.getElementById("username").value;
-        if (username == '') {
-            layer.msg("请输入账号")
-            return false;
-        } else {
-            $.ajaxSetup({
-                async: false
-            });
-            $.get("/itnl/findUserByUsername?username=" + username, function (res) {
-                if (res.data == null) {
-                    f = true;
-                } else {
-                    layer.msg("用户名已存在！");
-                }
-            });
-            return f;
-        }
-    }
 
     function checkExistPhone() {
         var f = false;
@@ -219,11 +286,9 @@
     }
 
 
-    function run() {
-        if (check() && checkExistUserName()) {
-            $("#from-id").submit();
-        }
-    }
+    // function run() {
+    //         $("#from-id").submit();
+    // }
 
     // 刷新图片
     function createCode2() {
@@ -231,6 +296,7 @@
         var src = imgSrc.attr("src");
         imgSrc.attr("src", changeUrl(src));
         document.getElementById("input2").value = "";
+        document.getElementById("code").value = "";
     }
 
     //为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳
@@ -295,6 +361,7 @@
                 sign = true;
             } else {
                 layer.msg("验证码错误");
+                createCode2();
             }
         });
         return sign;
@@ -303,7 +370,6 @@
 
     function sendSmsBtn2(obj) {
         if (checkPhone()) {
-            console.log(checkExistPhone() + "0000000000000");
             if (checkCode() && checkExistPhone()) {
                 obj = $(obj);
                 $.ajax({
@@ -345,8 +411,6 @@
             }
             , 1000)
     }
-
-
 
 
 </script>

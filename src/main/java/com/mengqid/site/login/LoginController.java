@@ -3,11 +3,13 @@ package com.mengqid.site.login;
 
 import com.mengqid.entity.Response;
 import com.mengqid.entity.common.SmsCode.SmsCode;
+import com.mengqid.entity.login.User;
 import com.mengqid.mappers.SmsCodeMapper;
 import com.mengqid.utils.CheckUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -45,7 +47,17 @@ public class LoginController {
         return mv;
     }
 
-
+    /**
+     * 短信快捷登录
+     * @param mobile
+     * @param code
+     * @param type
+     * @param request
+     * @param response
+     * @return
+     * @throws ServletException
+     * @throws IOException
+     */
     @RequestMapping("/login_m")
     @ResponseBody
     public Response login_m(String mobile, String code, Integer type, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -57,5 +69,17 @@ public class LoginController {
         }
         boolean flag = loginService.login_m(mobile, code,type,request,response);
         return flag ? Response.buildSuccessResponse() : Response.buildErrorResponse();
+    }
+
+    /**
+     * 用户注册
+     * @return
+     * @throws ServletException
+     * @throws IOException
+     */
+    @RequestMapping("/registerUser")
+    @ResponseBody
+    public Response registerUser(@RequestBody User user){
+        return loginService.registerUser(user);
     }
 }

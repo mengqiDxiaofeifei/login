@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Collection;
 import java.util.Date;
 
@@ -30,6 +31,10 @@ public class User implements UserDetails {
     private Date  createTime;   //创建时间
     private Date updateTime;    //更新时间
 
+
+
+    @Transient
+    private  String code;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
