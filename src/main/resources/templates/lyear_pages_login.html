@@ -3,6 +3,7 @@
 
 	<head>
 		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 		<title>登录页面 - 大白羊后台管理系统</title>
 		<link rel="icon" href="./css/favicon.ico" type="image/ico">
@@ -11,7 +12,21 @@
 		<link href="./pulgins.layui/css/layui.css" rel="stylesheet">
 		<link href="./css/materialdesignicons.min.css" rel="stylesheet">
 		<link href="./css/style.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
 		<style>
+			#container{
+				position: absolute;
+				height: 30%;
+				width: 20%;
+			}
+			input[type=password] {
+				height: calc(2.2rem + 2px);
+			}
+			.info{
+				margin-left: 17px;
+				top: 200px;
+				position: relative;
+			}
 			.lyear-wrapper {
 				position: relative;
 			}
@@ -71,6 +86,8 @@
 
 	<body>
 		<div class="row lyear-wrapper">
+			<div id='container'></div>
+			<span id="showLocation"class="info">上海</span>
 			<div class="lyear-login">
 				<div class="login-center">
 					<div class="login-header text-center">
@@ -421,6 +438,46 @@
                     showUsername();
                 }
             }
+		</script>
+<!--高德地图-->
+		<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=cf0f783dc577c050845b6858e8bbcb73"></script>
+		<script type="text/javascript">
+            var map = new AMap.Map('container', {
+                resizeEnable: true
+            });
+            AMap.plugin('AMap.Geolocation', function() {
+                var geolocation = new AMap.Geolocation({
+                    enableHighAccuracy: true,//是否使用高精度定位，默认:true
+                    timeout: 10000,          //超过10秒后停止定位，默认：5s
+                    buttonPosition:'RB',    //定位按钮的停靠位置
+                    buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+                    zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点
+
+                });
+                map.addControl(geolocation);
+                geolocation.getCurrentPosition(function(status,result){
+                    if(status=='complete'){
+						$("#showLocation").text(result.formattedAddress);
+                    }else{
+                        onError(result)
+                    }
+                });
+            });
+            //解析定位结果
+            function onComplete(data) {
+                document.getElementById('status').innerHTML='定位成功'
+                var str = [];
+                str.push('定位结果：' + data.position);
+                str.push('定位类别：' + data.location_type);
+                str.push('详细位置：'+data.formattedAddress);
+                console.log(data);
+                if(data.accuracy){
+                    str.push('精度：' + data.accuracy + ' 米');
+                }//如为IP精确定位结果则没有精度信息
+                str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
+                document.getElementById('result').innerHTML = str.join('<br>');
+            }
+
 		</script>
 	</body>
 
