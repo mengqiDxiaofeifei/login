@@ -5,16 +5,16 @@ import lombok.Data;
 @Data
 public class Temp {
 
-
-    private Author author;
+    //头像
+    private String avatar;
 
     private String desc;
+    //昵称
+    private String nickname;
 
-    private String descLanguage;
+    private String video_img ;
 
-    private Video video;
-
-    private String authorUserId;
+    private String video_url ;
 
     private Statistics statistics;
 }

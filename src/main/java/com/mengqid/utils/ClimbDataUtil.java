@@ -1,14 +1,15 @@
 package com.mengqid.utils;
 
 import com.alibaba.fastjson.JSONObject;
-import com.mengqid.entity.climb.Response;
-
+import com.mengqid.entity.climb.ShowData;
 
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @program: zhou_search
@@ -18,25 +19,60 @@ import java.util.*;
  */
 public class ClimbDataUtil {
 
+    private static final String url = "https://kuaiyinshi.com/api/mei-pai/recommend/";
+    private static final String baseFilePath = "D:/fasdfs-files/";
 
     public static void main(String[] args) throws Exception {
-       // uploadVideo("https://aweme.snssdk.com/aweme/v1/playwm/","v0200f6c0000biithr4eae1b47hh88sg","classpath:video/");
-
-//        Response response = climbVideo("6678628873883749636");
-//        System.out.println("response = " + response);
-
-//        String s = sendGet("https://kuaiyinshi.com/api/mei-pai/recommend/", "callback=showData&_="+System.currentTimeMillis());
-//        System.out.println("s = " + s);
-
-
-        String s = sendPost("https://api.apishop.net/communication/sms/send",
-                "apiKey=LSsrAGm279f7674a5de69fc3868625aeb3f984ced7ef78a&phoneNum=17320406595&templateID=10346&params=[6666]");
-        System.out.println("s = " + s);
 
     }
 
+    //"" + System.currentTimeMillis() + ".mp4"
+    public static String httpDownloadLoacl(String url, String fileName) throws IOException {
+        // String url = "http://mvvideo10.meitudata.com/5a82cfc23300e1330.mp4";
+        HttpURLConnection con;
+        FileOutputStream fs = null;
+        InputStream is;
+        BufferedInputStream bs = null;
+        String fileNameUrl = System.currentTimeMillis() + "-" + fileName;
+        File file = new File(baseFilePath + fileNameUrl);
+        //创建文件
+        file.createNewFile();
+        try {
+            con = (HttpURLConnection) new URL(url).openConnection();
+            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36");
+            //输入流
+            is = con.getInputStream();
+            bs = new BufferedInputStream(is);
+            //outStream
+            fs = new FileOutputStream(file);
+            byte[] bytes = new byte[1024];
 
-
+            int line;
+            //write
+            while ((line = bs.read(bytes)) != -1) {
+                fs.write(bytes, 0, line);
+                fs.flush();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (fs != null) {
+                try {
+                    fs.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (bs != null) {
+                try {
+                    bs.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return fileNameUrl;
+    }
 
     public static boolean httpDownload(String httpUrl, String saveFile) {
         // 1.下载网络文件
@@ -82,7 +118,7 @@ public class ClimbDataUtil {
             url = new URL(httpUrl);
         } catch (MalformedURLException e1) {
             e1.printStackTrace();
-           return null;
+            return null;
         }
 
         try {
@@ -90,7 +126,7 @@ public class ClimbDataUtil {
             URLConnection conn = url.openConnection();
             //3.输入流
             InputStream inStream = conn.getInputStream();
-            return    inStream;
+            return inStream;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return null;
@@ -101,25 +137,14 @@ public class ClimbDataUtil {
     }
 
 
-
     /**
      * 获取视频videoid
      */
-    public static Response climbVideo(String cursor) throws Exception {
-//        String baseurl = " https://mini2.fccabc.com/dbTest";
-       String baseurl = "https://dy.kukutool.com/dbTest";
-        String r = CryptUtils.generateRandom();
-        String e = buildParam(cursor,r);
-        String s = sendGet(baseurl, "cursor=" + cursor + "&count=6&e=" + e + "&r=" + r);
-        return JSONObject.parseObject(s.substring(2, s.length()), Response.class);
-    }
-
-
-
-    private static String buildParam(String cursor,String r) throws Exception {
-        String path = "dbTest?cursor=" + cursor + "&count=6";
-        String str = path+"@&^***"+r;
-       return   CryptUtils.getMD5Code(str);
+    public static ShowData climbVideo() throws Exception {
+        String stamp = "callback=showData&_=" + System.currentTimeMillis();
+        String s = sendGet(url, stamp);
+        s = s.substring(11, s.length() - 2);
+        return JSONObject.parseObject(s, ShowData.class);
     }
 
 

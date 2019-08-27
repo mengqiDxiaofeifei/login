@@ -5,13 +5,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class Response {
+public class ShowData {
 
-    private Integer status;
-
-    private Integer count;
-
-    private String cursor;
+    private Integer code;
 
     private List<Temp> data;
 }

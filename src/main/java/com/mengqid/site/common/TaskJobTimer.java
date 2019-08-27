@@ -52,23 +52,23 @@ public class TaskJobTimer {
 
 
 
-    /**
-     * 定时获取抖音视频及详情
-     * (从凌晨0~ 5点开始  每分钟执行一次)
-     */
-    //@Scheduled(cron = "0 0/5 0-5 * * ?")
-    public void scheduled2(){
-        log.info("现在时间是" + new Date());
-        SysParam sysParam = sysParamMapper.selectByKey(SystemConstant.CACHE_CURSOR);
-        if(!CheckUtil.isEmpty(sysParam)){
-            try{
-                String cursor = commonService.climbVideoUrl(sysParam.getValue());
-                sysParamMapper.updateBykey(SystemConstant.CACHE_CURSOR,cursor);
-            }catch (Exception e){
-                log.error("获取视频出错 ------------------ Exception: {}",e);
-            }
-        }
-    }
+//    /**
+//     * 定时获取抖音视频及详情
+//     * (从凌晨0~ 5点开始  每分钟执行一次)
+//     */
+//    //@Scheduled(cron = "0 0/5 0-5 * * ?")
+//    public void scheduled2(){
+//        log.info("现在时间是" + new Date());
+//        SysParam sysParam = sysParamMapper.selectByKey(SystemConstant.CACHE_CURSOR);
+//        if(!CheckUtil.isEmpty(sysParam)){
+//            try{
+//                String cursor = commonService.climbVideoUrl(sysParam.getValue());
+//                sysParamMapper.updateBykey(SystemConstant.CACHE_CURSOR,cursor);
+//            }catch (Exception e){
+//                log.error("获取视频出错 ------------------ Exception: {}",e);
+//            }
+//        }
+//    }
 
     /**
      * 初期服务器配置简陋，故如此

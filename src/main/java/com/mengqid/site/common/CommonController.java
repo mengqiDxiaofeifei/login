@@ -46,12 +46,13 @@ public class CommonController {
      *
      * @param
      * @param
-     * @param cursor
+     * @param
      * @return
      */
     @GetMapping("/climbVideoUrl")
-    public String climbVideoUrl(String cursor) throws Exception {
-        return commonService.climbVideoUrl(cursor);
+    public String climbVideoUrl() throws Exception {
+        commonService.climbVideoUrl();
+        return "success";
     }
 
 

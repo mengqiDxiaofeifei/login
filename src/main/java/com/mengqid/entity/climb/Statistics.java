@@ -8,9 +8,11 @@ import lombok.Data;
 @Data
 public class Statistics {
     //评论
-    private Integer commentCount;
+    private Integer comment;
     //点赞
-    private Integer diggCount;
+    private Integer zan;
     //分享数
-    private Integer shareCount;
+    private Integer share;
+    //播放数
+    private Integer play;
 }
