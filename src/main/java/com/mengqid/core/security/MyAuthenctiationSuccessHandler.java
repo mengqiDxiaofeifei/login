@@ -1,13 +1,14 @@
 package com.mengqid.core.security;
 
-import com.mengqid.core.base.UserSessionHolder;
+import com.alibaba.fastjson.JSON;
+import com.mengqid.constant.RedisConstant;
 import com.mengqid.entity.login.User;
 import com.mengqid.mappers.UserMapper;
 import com.mengqid.utils.CheckUtil;
 import com.mengqid.utils.NetworkUtil;
+import com.mengqid.utils.wechat.utils.RedisOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +25,9 @@ public class MyAuthenctiationSuccessHandler implements AuthenticationSuccessHand
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private RedisOperator redisOperator;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         User user = null;
@@ -31,22 +35,15 @@ public class MyAuthenctiationSuccessHandler implements AuthenticationSuccessHand
         if (authentication != null) {
             if (authentication.getPrincipal() instanceof User) {
                 user = (User) authentication.getPrincipal();
+                /** 保存用户信息到AccountSessionHolder */
+                redisOperator.set(RedisConstant.LOGIN_USER_REDIS_KEY, JSON.toJSONString(user));
             }
         }
         //登陆成功记录ip  登陆时间
-        user.setLast_ip(NetworkUtil.getIpAddress(request));
-        user.setLast_time(new Date());
+        user.setLastIp(NetworkUtil.getIpAddress(request));
+        user.setLastTime(new Date());
         userMapper.updateByPrimaryKeySelective(user);
 
-
-        /** 保存用户信息到AccountSessionHolder */
-        if (authentication != null) {
-            if (authentication.getPrincipal() instanceof User) {
-                user = (User) authentication.getPrincipal();
-                user.setPassword(null);
-                UserSessionHolder.put(user);
-            }
-        }
         if (!CheckUtil.isEmpty(user)) {
             if (null != user && 0 == user.getType()) {
                 response.sendRedirect("/home");

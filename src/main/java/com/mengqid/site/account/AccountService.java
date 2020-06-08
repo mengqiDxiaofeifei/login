@@ -45,7 +45,7 @@ public class AccountService {
             } else {
                 //新增
                 user.setPassword(PasswordEncoderUtil.passwordEncoder(user.getPassword()));
-                user.setUser_uuid(ShortUUID.generate());
+                user.setUserUuid(ShortUUID.generate());
                 user.setStatus(1);
                 user.setType(0);
                 user.setCreateTime(new Date());

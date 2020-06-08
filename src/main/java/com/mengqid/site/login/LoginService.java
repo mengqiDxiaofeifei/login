@@ -51,7 +51,7 @@ public class LoginService {
                 User user = new User();
                 user.setUsername("u"+mobile);
                 user.setPassword(PasswordEncoderUtil.passwordEncoder(mobile));
-                user.setUser_uuid(ShortUUID.generate());
+                user.setUserUuid(ShortUUID.generate());
                 user.setTelephone(mobile);
                 user.setStatus(1);
                 user.setType(0);
@@ -103,7 +103,7 @@ public class LoginService {
             }
         }
         user.setPassword(PasswordEncoderUtil.passwordEncoder(user.getPassword()));
-        user.setUser_uuid(ShortUUID.generate());
+        user.setUserUuid(ShortUUID.generate());
         user.setStatus(1);
         user.setType(0);
         user.setCreateTime(new Date());

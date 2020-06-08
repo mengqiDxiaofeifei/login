@@ -15,9 +15,10 @@ import java.util.Date;
 @Table(name = "tb_user")
 public class User implements UserDetails {
 
+    private static final long serialVersionUID = 4125096758372084309L;
     @Id
     private Integer id;
-    private String user_uuid;   //用户UUID
+    private String userUuid;   //用户UUID
     private Integer type;       //账号类型  1： 门户  0 ： 后台
     private String username;    //用户名
     private String password;    //用户密码
@@ -26,15 +27,15 @@ public class User implements UserDetails {
     private String role;        //用户角色
     private Integer status;     //用户状态  1： 启用  0 ：禁用
     private String image;       //用户头像
-    private String last_ip;     //上次登录IP
-    private Date last_time;   //上次登录时间
-    private Date  createTime;   //创建时间
+    private String lastIp;     //上次登录IP
+    private Date lastTime;   //上次登录时间
+    private Date createTime;   //创建时间
     private Date updateTime;    //更新时间
 
 
-
     @Transient
-    private  String code;
+    private String code;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

@@ -1,484 +1,482 @@
 ﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-	<head>
-		<meta charset="utf-8">
-		<!--<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">-->
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-		<title>登录页面 - 大白羊后台管理系统</title>
-		<link rel="icon" href="./css/favicon.ico" type="image/ico">
-		<meta name="author" content="yinqi">
-		<link href="./css/bootstrap.min.css" rel="stylesheet">
-		<link href="./pulgins.layui/css/layui.css" rel="stylesheet">
-		<link href="./css/materialdesignicons.min.css" rel="stylesheet">
-		<link href="./css/style.min.css" rel="stylesheet">
-		<!--<link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />-->
-		<style>
-			#container{
-				position: absolute;
-				height: 30%;
-				width: 20%;
-			}
-			/*input[type=password] {*/
-				/*height: calc(2.2rem + 2px);*/
-			/*}*/
-			.info{
-				margin-left: 17px;
-				top: 200px;
-				position: relative;
-			}
-			.lyear-wrapper {
-				position: relative;
-			}
-			
-			.lyear-login {
-				display: flex !important;
-				min-height: 100vh;
-				align-items: center !important;
-				justify-content: center !important;
-			}
-			
-			.login-center {
-				background: #fff;
-				min-width: 38.25rem;
-				padding: 2.14286em 3.57143em;
-				border-radius: 5px;
-				margin: 2.85714em 0;
-			}
-			
-			.login-header {
-				margin-bottom: 1.5rem !important;
-			}
-			
-			.login-center .has-feedback.feedback-left .form-control {
-				padding-left: 38px;
-				padding-right: 12px;
-			}
-			
-			.login-center .has-feedback.feedback-left .form-control-feedback {
-				left: 0;
-				right: auto;
-				width: 38px;
-				height: 38px;
-				line-height: 38px;
-				z-index: 4;
-				color: #dcdcdc;
-			}
-			
-			.login-center .has-feedback.feedback-left.row .form-control-feedback {
-				left: 15px;
-			}
-			
-			.message {
-				width: 200px;
-				height: 100px;
-				position: relative;
-				opacity: 0.5;
-				background: #6c757d;
-				align-content: center;
-				text-align: center;
-			}
-			.mobileDiv{
-				display: none;
-			}
-		</style>
-	</head>
+<head>
+    <meta charset="utf-8">
+    <!--<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>登录页面 - 怪兽网盘</title>
+    <link rel="icon" href="./css/favicon.ico" type="image/ico">
+    <meta name="author" content="yinqi">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./pulgins.layui/css/layui.css" rel="stylesheet">
+    <link href="./css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="./css/style.min.css" rel="stylesheet">
+    <!--<link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />-->
+    <style>
+        #container {
+            position: absolute;
+            height: 30%;
+            width: 20%;
+        }
 
-	<body>
-		<div class="row lyear-wrapper">
-			<!--<div id='container'></div>-->
-			<!--<span id="showLocation"class="info">上海</span>-->
-			<div class="lyear-login">
-				<div class="login-center">
-					<div class="login-header text-center">
-						<a href="index.html"> <img alt="light year admin" src="images/logo-sidebar.png"> </a>
-					</div>
-					<input type="hidden" id="typeId" value="1"/>
-					<!--短信快捷登录-->
-					<div id="mobileDiv" class="login_con mobileDiv">
-						<span style="color: #8b95a5;">注：未注册过的手机号，登录默认注册。</span>
-						<form th:action="@{/login_m}" method="post" id="from-id_2">
-							<input type="hidden" name="type" value="0"/>
-							<div class="form-group has-feedback feedback-left">
-								<input type="text" placeholder="请输入您的手机号" class="form-control" name="mobile" id="phone" />
-								<span class="mdi mdi-account form-control-feedback" aria-hidden="true"></span>
-							</div>
-							<div class="form-group has-feedback feedback-left row">
-								<div class="col-xs-7">
-									<input type="text" id="input2" class="form-control" placeholder="验证码">
-									<span class="mdi mdi-check-all form-control-feedback" aria-hidden="true"></span>
-								</div>
-								<div class="col-xs-5">
-									<!--<imgs src="/images/captcha.png" class="pull-right" id="captcha" style="cursor: pointer;"-->
-									<!--onclick="this.src=this.src+'?d='+Math.random();" title="点击刷新" alt="captcha">-->
-									<img id="imgObj2" class="pull-right" onclick="createCode2()" src="/itnl/validateCode" alt="">
-								</div>
-							</div>
-							<div class="form-group has-feedback feedback-left row">
-								<div class="col-xs-7">
-									<input type="text" id="code" name="code" class="form-control" placeholder="短信验证码">
-									<span class="mdi mdi-check-all form-control-feedback" aria-hidden="true"></span>
-								</div>
-								<div class="col-xs-5">
-									<button type="button" class="btn btn-block btn-primary" onclick=sendSmsBtn(this)>
-										获取验证码
-									</button>
-								</div>
-							</div>
-							<div class="form-group">
-								<input type="button" class="btn btn-block btn-primary" id="login-btn2" onclick="run_m()" value="立即登录" />
-							</div>
-							<a href="javascript:void(0)" onclick="showUsername()">账号密码登录</a>
-							<a href="/register" style="float: right;">没有账号?马上注册</a>
-						</form>
-					</div>
-					<!--账号密码登录-->
-					<div id="userDiv" class="login_con" >
-						<form th:action="@{/login}" method="post" id="from-id">
-							<input type="hidden" name="type" value="1"/>
-							<div class="form-group has-feedback feedback-left">
-								<input type="text" placeholder="请输入您的用户名" class="form-control" name="username" id="username" />
-								<span class="mdi mdi-account form-control-feedback" aria-hidden="true"></span>
-							</div>
-							<div class="form-group has-feedback feedback-left">
-								<input type="password" placeholder="请输入密码" class="form-control" id="password" name="password" />
-								<span class="mdi mdi-lock form-control-feedback" aria-hidden="true"></span>
-							</div>
-							<div class="form-group has-feedback feedback-left row">
-								<div class="col-xs-7">
-									<input type="text" id="input" class="form-control" placeholder="验证码">
-									<span class="mdi mdi-check-all form-control-feedback" aria-hidden="true"></span>
-								</div>
-								<div class="col-xs-5">
-									<!--<imgs src="/images/captcha.png" class="pull-right" id="captcha" style="cursor: pointer;"-->
-									<!--onclick="this.src=this.src+'?d='+Math.random();" title="点击刷新" alt="captcha">-->
-									<img id="imgObj" class="pull-right" onclick="createCode()" src="/itnl/validateCode" alt="">
-								</div>
-							</div>
-							<div class="form-group">
-								<input type="button" class="btn btn-block btn-primary" id="login-btn" onclick="run()" value="立即登录" />
-							</div>
-							<a href="javascript:void(0)" onclick="showMobile()">短信快捷登录</a>
-							<a href="/register" style="float: right;">没有账号?马上注册</a>
-						</form>
-					</div>
+        /*input[type=password] {*/
+        /*height: calc(2.2rem + 2px);*/
+        /*}*/
+        .info {
+            margin-left: 17px;
+            top: 200px;
+            position: relative;
+        }
 
-					<hr>
-					<footer class="col-sm-12 text-center">
-						<p class="m-b-0">Copyright © 2019
-							<a href="http://mengqid.cn/index">官网</a>. All right reserved
-						</p>
-					</footer>
-				</div>
-			</div>
-		</div>
-		<script type="text/javascript" src="./plugins/design/layui.js"></script>
-		<script type="text/javascript" src="./js/jquery.min.js"></script>
-		<script type="text/javascript" src="./js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="./pulgins.layui/layui.all.js"></script>
-		<script>
-   			var countdown = 60;
-			var layer;
-			layui.use(['layer'], function() {
-				layer = layui.layer;
-			});
+        .lyear-wrapper {
+            position: relative;
+        }
 
-			//校验验证码
-			function check() {
-				if(document.getElementById("username").value == '') {
-					layer.msg("请输入账号")
-					return false;
-				}
-				if(document.getElementById("password").value == '') {
-					layer.msg("请输入密码")
-					$("[name=password]").val("");
-					return false;
-				}
-				var flag;
-				var inputCode = document.getElementById("input").value.toUpperCase(); //取得输入的验证码并转化为大写
-				if(inputCode.length <= 0) { //若输入的验证码长度为0
-					layer.msg("请输入验证码");
-					return false;
-				}
-				$.ajaxSetup({
-					async: false
-				});
-				$.get("/itnl/checkCode?code=" + inputCode, function(data) {
-					if(data == "success") {
-						flag = true;
-					} else {
-						layer.msg("验证码错误");
-					}
-				});
-				return flag;
-			}
+        .lyear-login {
+            display: flex !important;
+            min-height: 100vh;
+            align-items: center !important;
+            justify-content: center !important;
+        }
 
-			function run() {
-				if(check()) {
-					$("#from-id").submit();
-				}
-			}
+        .login-center {
+            background: #fff;
+            min-width: 38.25rem;
+            padding: 2.14286em 3.57143em;
+            border-radius: 5px;
+            margin: 2.85714em 0;
+        }
 
-            function run_m() {
-                if (checkRun()) {
-                    $("#from-id_2").submit();
-                }
+        .login-header {
+            margin-bottom: 1.5rem !important;
+        }
+
+        .login-center .has-feedback.feedback-left .form-control {
+            padding-left: 38px;
+            padding-right: 12px;
+        }
+
+        .login-center .has-feedback.feedback-left .form-control-feedback {
+            left: 0;
+            right: auto;
+            width: 38px;
+            height: 38px;
+            line-height: 38px;
+            z-index: 4;
+            color: #dcdcdc;
+        }
+
+        .login-center .has-feedback.feedback-left.row .form-control-feedback {
+            left: 15px;
+        }
+
+        .message {
+            width: 200px;
+            height: 100px;
+            position: relative;
+            opacity: 0.5;
+            background: #6c757d;
+            align-content: center;
+            text-align: center;
+        }
+
+        .mobileDiv {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+<div class="row lyear-wrapper">
+    <!--<div id='container'></div>-->
+    <!--<span id="showLocation"class="info">上海</span>-->
+    <div class="lyear-login">
+        <div class="login-center">
+            <div class="login-header text-center">
+                    <a href="index.html"> <img alt="light year admin" style="width: 40%" src="images/timg.png"> </a>
+            </div>
+            <input type="hidden" id="typeId" value="1"/>
+            <!--短信快捷登录-->
+            <div id="mobileDiv" class="login_con mobileDiv">
+                <span style="color: #8b95a5;">注：未注册过的手机号，登录默认注册。</span>
+                <form th:action="@{/login_m}" method="post" id="from-id_2">
+                    <input type="hidden" name="type" value="0"/>
+                    <div class="form-group has-feedback feedback-left">
+                        <input type="text" placeholder="请输入您的手机号" class="form-control" name="mobile" id="phone"/>
+                        <span class="mdi mdi-account form-control-feedback" aria-hidden="true"></span>
+                    </div>
+                    <div class="form-group has-feedback feedback-left row">
+                        <div class="col-xs-7">
+                            <input type="text" id="input2" class="form-control" placeholder="验证码">
+                            <span class="mdi mdi-check-all form-control-feedback" aria-hidden="true"></span>
+                        </div>
+                        <div class="col-xs-5">
+                            <!--<imgs src="/images/captcha.png" class="pull-right" id="captcha" style="cursor: pointer;"-->
+                            <!--onclick="this.src=this.src+'?d='+Math.random();" title="点击刷新" alt="captcha">-->
+                            <img id="imgObj2" class="pull-right" onclick="createCode2()" src="/itnl/validateCode"
+                                 alt="">
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback feedback-left row">
+                        <div class="col-xs-7">
+                            <input type="text" id="code" name="code" class="form-control" placeholder="短信验证码">
+                            <span class="mdi mdi-check-all form-control-feedback" aria-hidden="true"></span>
+                        </div>
+                        <div class="col-xs-5">
+                            <button type="button" class="btn btn-block btn-primary" onclick=sendSmsBtn(this)>
+                                获取验证码
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="button" class="btn btn-block btn-primary" id="login-btn2" onclick="run_m()"
+                               value="立即登录"/>
+                    </div>
+                    <a href="javascript:void(0)" onclick="showUsername()">账号密码登录</a>
+                    <a href="/register" style="float: right;">没有账号?马上注册</a>
+                </form>
+            </div>
+            <!--账号密码登录-->
+            <div id="userDiv" class="login_con">
+                <form th:action="@{/login}" method="post" id="from-id">
+                    <input type="hidden" name="type" value="1"/>
+                    <div class="form-group has-feedback feedback-left">
+                        <input type="text" placeholder="请输入您的用户名" class="form-control" name="username" id="username"/>
+                        <span class="mdi mdi-account form-control-feedback" aria-hidden="true"></span>
+                    </div>
+                    <div class="form-group has-feedback feedback-left">
+                        <input type="password" placeholder="请输入密码" class="form-control" id="password" name="password"/>
+                        <span class="mdi mdi-lock form-control-feedback" aria-hidden="true"></span>
+                    </div>
+                    <div class="form-group has-feedback feedback-left row">
+                        <div class="col-xs-7">
+                            <input type="text" id="input" class="form-control" placeholder="验证码">
+                            <span class="mdi mdi-check-all form-control-feedback" aria-hidden="true"></span>
+                        </div>
+                        <div class="col-xs-5">
+                            <!--<imgs src="/images/captcha.png" class="pull-right" id="captcha" style="cursor: pointer;"-->
+                            <!--onclick="this.src=this.src+'?d='+Math.random();" title="点击刷新" alt="captcha">-->
+                            <img id="imgObj" class="pull-right" onclick="createCode()" src="/itnl/validateCode" alt="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="button" class="btn btn-block btn-primary" id="login-btn" onclick="run()"
+                               value="立即登录"/>
+                    </div>
+                    <a href="javascript:void(0)" onclick="showMobile()">短信快捷登录</a>
+                    <a href="/register" style="float: right;">没有账号?马上注册</a>
+                </form>
+            </div>
+
+            <hr>
+            <footer class="col-sm-12 text-center">
+                <p class="m-b-0">Copyright © 2019
+                    <a href="http://mengqid.cn/index">官网</a>. All right reserved
+                </p>
+            </footer>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="./plugins/design/layui.js"></script>
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+<script type="text/javascript" src="./pulgins.layui/layui.all.js"></script>
+<script>
+    var countdown = 60;
+    var layer;
+    layui.use(['layer'], function () {
+        layer = layui.layer;
+    });
+
+    //校验验证码
+    function check() {
+        if (document.getElementById("username").value == '') {
+            layer.msg("请输入账号")
+            return false;
+        }
+        if (document.getElementById("password").value == '') {
+            layer.msg("请输入密码")
+            $("[name=password]").val("");
+            return false;
+        }
+        var flag;
+        var inputCode = document.getElementById("input").value.toUpperCase(); //取得输入的验证码并转化为大写
+        if (inputCode.length <= 0) { //若输入的验证码长度为0
+            layer.msg("请输入验证码");
+            return false;
+        }
+        $.ajaxSetup({
+            async: false
+        });
+        $.get("/itnl/checkCode?code=" + inputCode, function (data) {
+            if (data == "success") {
+                flag = true;
+            } else {
+                layer.msg("验证码错误");
+                document.getElementById("input").value = "";
             }
+        });
+        return flag;
+    }
 
-			// 刷新图片
-			function createCode() {
-				var imgSrc = $("#imgObj");
-				var src = imgSrc.attr("src");
-				imgSrc.attr("src", changeUrl(src));
-			}
+    function run() {
+        if (check()) {
+            $("#from-id").submit();
+        }
+    }
 
-            // 刷新图片
-            function createCode2() {
-                var imgSrc = $("#imgObj2");
-                var src = imgSrc.attr("src");
-                imgSrc.attr("src", changeUrl(src));
+    function run_m() {
+        if (checkRun()) {
+            $("#from-id_2").submit();
+        }
+    }
+
+    // 刷新图片
+    function createCode() {
+        var imgSrc = $("#imgObj");
+        var src = imgSrc.attr("src");
+        imgSrc.attr("src", changeUrl(src));
+    }
+
+    // 刷新图片
+    function createCode2() {
+        var imgSrc = $("#imgObj2");
+        var src = imgSrc.attr("src");
+        imgSrc.attr("src", changeUrl(src));
+    }
+
+    //为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳
+    function changeUrl(url) {
+        var timestamp = (new Date()).valueOf();
+        return "/itnl/validateCode?timestamp=" + timestamp;
+        //
+        //
+        // if (url.indexOf("?") > -1) {
+        // 	url = url + "&timestamp=" + timestamp
+        // } else {
+        // 	url = url + "?timestamp=" + timestamp
+        // }
+        // // url = url + "?timestamp=" + timestamp;
+        // return url;
+    }
+
+    document.onkeydown = function (event) {
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+        if (e && e.keyCode == 13) { // enter 键
+            // if ($("#typeId").val() == 0) {
+            //     run();
+            // } else {
+            //     run_m();
+            // }
+            run();
+        }
+    };
+    //$("#mobileDiv").click(function(e){
+    //
+    //});
+    //切换
+    function showMobile() {
+        $("#typeId").val("0");
+        $("#mobileDiv").css('display', 'block');
+        $("#userDiv").css('display', 'none');
+    }
+
+    function showUsername() {
+        $("#typeId").val("1");
+        $("#mobileDiv").css('display', 'none');
+        $("#userDiv").css('display', 'block');
+    }
+
+    //校验验证码
+    var regex = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+
+    function checkPhone() {
+        if (document.getElementById("phone").value != '') {
+            if (!document.getElementById("phone").value.match(regex)) {
+                layer.msg("请输入正确手机号");
+                return false;
+            } else {
+                return true;
             }
+        } else {
+            layer.msg("请输入手机号");
+            return false;
+        }
+        return flag;
+    }
 
-			//为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳
-			function changeUrl(url) {
-				var timestamp = (new Date()).valueOf();
-				return "/itnl/validateCode?timestamp=" + timestamp;
-				//
-				//
-				// if (url.indexOf("?") > -1) {
-				// 	url = url + "&timestamp=" + timestamp
-				// } else {
-				// 	url = url + "?timestamp=" + timestamp
-				// }
-				// // url = url + "?timestamp=" + timestamp;
-				// return url;
-			}
-
-            document.onkeydown = function (event) {
-                var e = event || window.event || arguments.callee.caller.arguments[0];
-                if (e && e.keyCode == 13) { // enter 键
-                    // if ($("#typeId").val() == 0) {
-                    //     run();
-                    // } else {
-                    //     run_m();
-                    // }
-					run();
-                }
-            };
-			//$("#mobileDiv").click(function(e){
-			//	 
-			//});
-			//切换
-			function showMobile() {
-                $("#typeId").val("0");
-				$("#mobileDiv").css('display', 'block');
-				$("#userDiv").css('display', 'none');
-			}
-
-			function showUsername() {
-                $("#typeId").val("1");
-				$("#mobileDiv").css('display', 'none');
-				$("#userDiv").css('display', 'block');
-			}
-
-            //校验验证码
-            var regex = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
-
-            function checkPhone() {
-                if (document.getElementById("phone").value != '') {
-                    if (!document.getElementById("phone").value.match(regex)) {
-                        layer.msg("请输入正确手机号");
+    function checkRun() {
+        if (document.getElementById("phone").value != '') {
+            if (!document.getElementById("phone").value.match(regex)) {
+                layer.msg("请输入正确手机号");
+                return false;
+            } else {
+                var inputCode = document.getElementById("input2").value.toUpperCase(); //取得输入的验证码并转化为大写
+                if (inputCode.length <= 0) { //若输入的验证码长度为0
+                    layer.msg("请输入验证码");
+                    return false;
+                } else {
+                    var code = document.getElementById("code").value;
+                    if (code.length <= 0) { //若输入的验证码长度为0
+                        layer.msg("请输入短信验证码");
                         return false;
                     } else {
                         return true;
                     }
-                } else {
-                    layer.msg("请输入手机号");
-                    return false;
                 }
-                return flag;
             }
+        } else {
+            layer.msg("请输入手机号");
+            return false;
+        }
+    }
 
-            function checkRun() {
-                if (document.getElementById("phone").value != '') {
-                    if (!document.getElementById("phone").value.match(regex)) {
-                        layer.msg("请输入正确手机号");
-                        return false;
-                    } else {
-                        var inputCode = document.getElementById("input2").value.toUpperCase(); //取得输入的验证码并转化为大写
-                        if (inputCode.length <= 0) { //若输入的验证码长度为0
-                            layer.msg("请输入验证码");
-                            return false;
-                        } else {
-                           var code =  document.getElementById("code").value;
-                            if (code.length <= 0) { //若输入的验证码长度为0
-                                layer.msg("请输入短信验证码");
-                                return false;
-                            } else {
-                                return true;
-							}
-                        }
+    function checkCode() {
+        var sign = false;
+        var inputCode = document.getElementById("input2").value.toUpperCase(); //取得输入的验证码并转化为大写
+        if (inputCode.length <= 0) { //若输入的验证码长度为0
+            layer.msg("请输入验证码");
+            return false;
+        }
+        $.ajaxSetup({
+            async: false
+        });
+        $.get("/itnl/checkCode?code=" + inputCode, function (data) {
+            if (data == "success") {
+                sign = true;
+            } else {
+                layer.msg("验证码错误");
+                document.getElementById("input2").value = "";
+            }
+        });
+        return sign;
+    }
+
+
+    function sendSmsBtn(obj) {
+        if (checkPhone() && checkCode()) {
+            obj = $(obj);
+            $.ajax({
+                url: "/itnl/sendCode",
+                contentType: "application/json",
+                type: "get",
+                dataType: "json",
+                async: true,
+                data: {
+                    "mobile": $("#phone").val(),
+                },
+                success: function (data, status) {
+                    if (data.code == 200) {
+                        layer.msg("发送成功")
                     }
-                } else {
-                    layer.msg("请输入手机号");
-                    return false;
                 }
+            })
+            settime(obj);
+        }
+    }
+
+
+    //验证码
+    function settime(obj) { //发送验证码倒计时
+        if (countdown == 0) {
+            obj.attr('disabled', false);
+            //obj.removeattr("disabled");
+            obj.text("发送验证码");
+            countdown = 60;
+            return;
+        } else {
+            obj.attr('disabled', true);
+            obj.text("重新发送(" + countdown + ")");
+            countdown--;
+        }
+        setTimeout(function () {
+                settime(obj)
             }
+            , 1000)
+    }
 
-            function checkCode() {
-                var sign = false;
-                var inputCode = document.getElementById("input2").value.toUpperCase(); //取得输入的验证码并转化为大写
-                if(inputCode.length <= 0) { //若输入的验证码长度为0
-                    layer.msg("请输入验证码");
-                    return false;
-                }
-                $.ajaxSetup({
-                    async: false
-                });
-                $.get("/itnl/checkCode?code=" + inputCode, function(data) {
-                    if(data == "success") {
-                        sign = true;
-                    } else {
-                        layer.msg("验证码错误");
-                    }
-                });
-                return sign;
+
+</script>
+<script th:inline="javascript">
+    var param = [[${param}]];
+    var type;
+    var msg;
+    if (param.error != undefined) {
+        if (param.error.length > 0) {
+            if (param.error[0] == 0) {
+                layer.msg("用户不存在");
+            } else if (param.error[0] == 1) {
+                layer.msg("密码错误");
             }
-
-
-            function sendSmsBtn(obj) {
-                if (checkPhone() && checkCode()) {
-                    obj = $(obj);
-                    $.ajax({
-                        url: "/itnl/sendCode",
-                        contentType: "application/json",
-                        type: "get",
-                        dataType: "json",
-                        async: true,
-                        data: {
-                            "mobile": $("#phone").val(),
-                        },
-                        success: function (data, status) {
-                            if (data.code == 200) {
-                                layer.msg("发送成功")
-                            }
-                        }
-                    })
-                    settime(obj);
-                }
+        }
+    }
+    if (param.type != undefined) {
+        if (param.type.length > 0) {
+            type = param.type[0];
+        }
+    }
+    if (param.msg != undefined) {
+        if (param.msg.length > 0) {
+            msg = param.msg[0];
+        }
+    }
+    if (msg != null || msg != undefined) {
+        if (msg != "") {
+            if (msg = "error_code") {
+                layer.msg("手机验证码错误");
             }
-
-
-
-			//验证码
-            function settime(obj) { //发送验证码倒计时
-                if (countdown == 0) {
-                    obj.attr('disabled', false);
-                    //obj.removeattr("disabled");
-                    obj.text("发送验证码");
-                    countdown = 60;
-                    return;
-                } else {
-                    obj.attr('disabled', true);
-                    obj.text("重新发送(" + countdown + ")");
-                    countdown--;
-                }
-                setTimeout(function () {
-                        settime(obj)
-                    }
-                    , 1000)
-            }
-
-
-
-
-
-
-
-
-
-
-
-		</script>
-		<script th:inline="javascript">
-			var param = [[${param}]];
-			var type;
-			var msg;
-			if(param.error != undefined) {
-				if(param.error.length > 0) {
-					if(param.error[0] == 0) {
-						layer.msg("用户不存在");
-					} else if(param.error[0] == 1) {
-						layer.msg("密码错误");
-					}
-				}
-			}
-            if(param.type != undefined) {
-                if(param.type.length > 0) {
-                  type =  param.type[0];
-                }
-            }
-            if(param.msg != undefined) {
-                if(param.msg.length > 0) {
-                    msg =  param.msg[0];
-                }
-            }
-            if (msg != null || msg != undefined) {
-                if (msg != "") {
-                    if(msg = "error_code"){
-                        layer.msg("手机验证码错误");
-					}
-                }
-            }
-            if (type != undefined || type != "") {
-                if (type == 0) {
-                    //手机号登录
-                    showMobile();
-                } else if (type == 1) {
-                    showUsername();
-                }
-            }
-		</script>
+        }
+    }
+    if (type != undefined || type != "") {
+        if (type == 0) {
+            //手机号登录
+            showMobile();
+        } else if (type == 1) {
+            showUsername();
+        }
+    }
+</script>
 <!--高德地图-->
-		<!--<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=cf0f783dc577c050845b6858e8bbcb73"></script>-->
-		<!--<script type="text/javascript">-->
-            <!--var map = new AMap.Map('container', {-->
-                <!--resizeEnable: true-->
-            <!--});-->
-            <!--AMap.plugin('AMap.Geolocation', function() {-->
-                <!--var geolocation = new AMap.Geolocation({-->
-                    <!--enableHighAccuracy: true,//是否使用高精度定位，默认:true-->
-                    <!--timeout: 10000,          //超过10秒后停止定位，默认：5s-->
-                    <!--buttonPosition:'RB',    //定位按钮的停靠位置-->
-                    <!--buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)-->
-                    <!--zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点-->
+<!--<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=cf0f783dc577c050845b6858e8bbcb73"></script>-->
+<!--<script type="text/javascript">-->
+<!--var map = new AMap.Map('container', {-->
+<!--resizeEnable: true-->
+<!--});-->
+<!--AMap.plugin('AMap.Geolocation', function() {-->
+<!--var geolocation = new AMap.Geolocation({-->
+<!--enableHighAccuracy: true,//是否使用高精度定位，默认:true-->
+<!--timeout: 10000,          //超过10秒后停止定位，默认：5s-->
+<!--buttonPosition:'RB',    //定位按钮的停靠位置-->
+<!--buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)-->
+<!--zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点-->
 
-                <!--});-->
-                <!--map.addControl(geolocation);-->
-                <!--geolocation.getCurrentPosition(function(status,result){-->
-                    <!--if(status=='complete'){-->
-						<!--$("#showLocation").text(result.formattedAddress);-->
-                    <!--}else{-->
-                        <!--onError(result)-->
-                    <!--}-->
-                <!--});-->
-            <!--});-->
-            <!--//解析定位结果-->
-            <!--function onComplete(data) {-->
-                <!--document.getElementById('status').innerHTML='定位成功'-->
-                <!--var str = [];-->
-                <!--str.push('定位结果：' + data.position);-->
-                <!--str.push('定位类别：' + data.location_type);-->
-                <!--str.push('详细位置：'+data.formattedAddress);-->
-                <!--console.log(data);-->
-                <!--if(data.accuracy){-->
-                    <!--str.push('精度：' + data.accuracy + ' 米');-->
-                <!--}//如为IP精确定位结果则没有精度信息-->
-                <!--str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));-->
-                <!--document.getElementById('result').innerHTML = str.join('<br>');-->
-            <!--}-->
+<!--});-->
+<!--map.addControl(geolocation);-->
+<!--geolocation.getCurrentPosition(function(status,result){-->
+<!--if(status=='complete'){-->
+<!--$("#showLocation").text(result.formattedAddress);-->
+<!--}else{-->
+<!--onError(result)-->
+<!--}-->
+<!--});-->
+<!--});-->
+<!--//解析定位结果-->
+<!--function onComplete(data) {-->
+<!--document.getElementById('status').innerHTML='定位成功'-->
+<!--var str = [];-->
+<!--str.push('定位结果：' + data.position);-->
+<!--str.push('定位类别：' + data.location_type);-->
+<!--str.push('详细位置：'+data.formattedAddress);-->
+<!--console.log(data);-->
+<!--if(data.accuracy){-->
+<!--str.push('精度：' + data.accuracy + ' 米');-->
+<!--}//如为IP精确定位结果则没有精度信息-->
+<!--str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));-->
+<!--document.getElementById('result').innerHTML = str.join('<br>');-->
+<!--}-->
 
-		<!--</script>-->
-	</body>
+<!--</script>-->
+</body>
 
 </html>
