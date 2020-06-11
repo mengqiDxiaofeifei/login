@@ -1,11 +1,8 @@
 package com.mengqid.core.interceptor;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONPObject;
 import com.mengqid.constant.RedisConstant;
-import com.mengqid.core.base.UserSessionHolder;
 import com.mengqid.entity.login.User;
-import com.mengqid.utils.wechat.utils.RedisOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -29,9 +26,6 @@ public class AccountSessionInterceptor extends HandlerInterceptorAdapter {
     @Value("${spring.application.name}")
     private String applicationName;
 
-    @Autowired
-    private RedisOperator redisOperator;
-
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
@@ -45,7 +39,6 @@ public class AccountSessionInterceptor extends HandlerInterceptorAdapter {
             if (authentication.getPrincipal() instanceof User) {
                 user = (User) authentication.getPrincipal();
                 user.setPassword(null);
-                redisOperator.set(RedisConstant.LOGIN_USER_REDIS_KEY, JSON.toJSONString(user));
             }
         }
         return true;

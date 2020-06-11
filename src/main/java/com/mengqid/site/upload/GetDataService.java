@@ -1,18 +1,16 @@
 package com.mengqid.site.upload;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.mengqid.constant.RedisConstant;
 import com.mengqid.entity.login.User;
 import com.mengqid.entity.upload.Fileim;
 import com.mengqid.entity.upload.UserFile;
 import com.mengqid.mappers.UserFileMapper;
+import com.mengqid.utils.AccountUtils;
 import com.mengqid.utils.upload.GetIcon;
 import com.mengqid.utils.upload.PathAnalysis;
 import com.mengqid.utils.upload.ResultData;
 import com.mengqid.utils.upload.VoToBean;
-import com.mengqid.utils.wechat.utils.RedisOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -35,8 +33,6 @@ public class GetDataService {
     ResultData rd;
     @Autowired
     GetIcon getIcon;
-    @Autowired
-    private RedisOperator redisOperator;
 
     //    private String id = userData.getId();
     public void deleteFile(String path) {
@@ -148,8 +144,6 @@ public class GetDataService {
 
 
     public User getUser() {
-        String s = redisOperator.get(RedisConstant.LOGIN_USER_REDIS_KEY);
-        JSONObject jsonObject = JSONObject.parseObject(s);
-        return JSON.toJavaObject(jsonObject, User.class);
+        return AccountUtils.getAccount();
     }
 }

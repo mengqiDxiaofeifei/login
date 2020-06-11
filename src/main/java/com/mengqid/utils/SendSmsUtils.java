@@ -10,26 +10,21 @@ import com.alibaba.fastjson.JSONObject;
  **/
 public class SendSmsUtils {
 
-    private static String requestUrl = " http://apis.haoservice.com/sms/sendv2";
-    private static String apiKey = "64257c1d0b944531a23e2c5f3343b891";
-    private static String templateID = "1945";
+    private static String requestUrl = " https://api.apishop.net/communication/sms/send";
+    private static String apiKey = "LSsrAGm279f7674a5de69fc3868625aeb3f984ced7ef78a";
+    private static String templateID = "10346";
 
 
-    public static JSONObject sendSms(String mobile,String code) {
+    public static JSONObject sendSms(String mobile, String code) {
         String resp = ClimbDataUtil.sendPost(requestUrl,
-                "key="+apiKey+"&mobile="+mobile+"&tpl_id="+templateID+"&content="+code+"");
-        if (!CheckUtil.isEmpty(resp)) {
-            JSONObject jsonObject = JSONObject.parseObject(resp);
-            if (!CheckUtil.isEmpty(jsonObject)) {
-                return jsonObject;
-            }
-        }
+                "apiKey=" + apiKey + "&phoneNum=" + mobile + "&templateID=" + templateID + "&params=[" + code + "]");
+        System.out.println("resp = " + resp);
         return null;
     }
 
     public static void main(String[] args) {
 
-        sendSms("17320406595","4444");
+        sendSms("17320406595", "4444");
     }
 
 }

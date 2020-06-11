@@ -133,11 +133,11 @@ public class CheckCodeController {
             return Response.buildErrorResponse("手机号不能为空！");
         }
         //获取随机验证码
-       //String code = getNonceStr();
+       String code = getNonceStr();
         //测试专用
-         String code = "0000";
+        // String code = "0000";
         //发送验证码
-//        JSONObject returnMsg = SendSmsUtils.sendSms(mobile, code);
+       JSONObject returnMsg = SendSmsUtils.sendSms(mobile, code);
 ////        if (CheckUtil.isEmpty(returnMsg)) {
 ////            log.info("/sendCode  msg : {} ,param : {} , time :{}", "调用短信接口失败！", "mobile :" + mobile, new Date());
 ////            return Response.buildErrorResponse("调用短信接口失败");

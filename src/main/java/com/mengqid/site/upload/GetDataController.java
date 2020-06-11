@@ -7,7 +7,6 @@ import com.mengqid.entity.upload.UserFile;
 import com.mengqid.mappers.UserFileMapper;
 import com.mengqid.utils.upload.PathAnalysis;
 import com.mengqid.utils.upload.ResultData;
-import com.mengqid.utils.wechat.utils.RedisOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
